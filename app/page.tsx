@@ -58,7 +58,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-gray-400 text-base max-w-lg mx-auto">
-            Chapter-wise MCQ quizzes — apni knowledge test karein. Har sawal par 50 second milte hain.
+            Chapter-wise MCQ quizzes — apni knowledge test karein. Har sawal par 30 second milte hain.
           </p>
         </div>
 
