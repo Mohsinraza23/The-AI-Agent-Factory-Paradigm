@@ -2,7 +2,7 @@ import type { Chapter } from "./index";
 
 export const chapter13: Chapter = {
   id: "13",
-  title: "Markdown & AI Commercial Playbook",
+  title: "Markdown - Writing Instructions",
   description: "Markdown structure for AIDD, headings, lists, code blocks, links/images, specification writing, Digital FTE, agent taxonomy, licensing",
   topics: 10,
   questions: [
