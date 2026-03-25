@@ -172,7 +172,8 @@ export default function Home() {
               <img
                 src="/mohsin.png"
                 alt="Mohsin Raza"
-                className="w-12 h-12 rounded-full object-cover object-top border-2 border-green-500/40 shadow-lg shadow-green-500/15"
+                className="w-14 h-14 rounded-full object-cover border-2 border-green-500/40 shadow-lg shadow-green-500/15"
+                style={{ objectPosition: "center 12%" }}
               />
               <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#070f0a]" />
             </div>
