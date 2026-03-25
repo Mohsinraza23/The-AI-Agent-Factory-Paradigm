@@ -1,25 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { questions } from "@/data/questions";
-
-const topics = [
-  { label: "LLM Constraints", icon: "🧠" },
-  { label: "Agent Maturity Model", icon: "📈" },
-  { label: "Five Powers & AI Stack", icon: "⚡" },
-  { label: "AIFF Standards", icon: "📋" },
-  { label: "Digital FTE Strategy", icon: "💼" },
-  { label: "Orchestrator Role", icon: "🎯" },
-  { label: "Nine Pillars of AIDD", icon: "🏛️" },
-  { label: "Spec-Driven Development", icon: "📐" },
-  { label: "Inflection Point", icon: "🚀" },
-];
-
-const steps = [
-  { num: "01", title: "Sawal Parhen", desc: "Har sawal ko ghour se parhen" },
-  { num: "02", title: "Jawab Chunein", desc: "4 options mein se sahi chunein" },
-  { num: "03", title: "Nateeja Dekhein", desc: "Score aur detailed review payein" },
-];
+import { chapters } from "@/data/index";
 
 export default function Home() {
   return (
@@ -61,96 +43,126 @@ export default function Home() {
           </div>
         </a>
 
-        {/* Chapter Badge */}
-        <div className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-300 text-xs font-semibold px-4 py-2 rounded-full">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            Chapter 12 — Exam Preparation Quiz
-          </span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="text-center mb-4">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-            <span className="text-white">The AI Agent</span>
-            <br />
+        {/* Hero */}
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-5">
+            <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-300 text-xs font-semibold px-4 py-2 rounded-full">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              Exam Preparation Quiz
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight mb-3">
+            <span className="text-white">Code with </span>
             <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-lime-400 bg-clip-text text-transparent">
-              Factory Paradigm
+              Mohsin
             </span>
           </h1>
-          <p className="mt-4 text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
-            Test your knowledge on LLMs, AI Agents, AIDD, and the future of software development
+          <p className="text-gray-400 text-base max-w-lg mx-auto">
+            Chapter-wise MCQ quizzes — apni knowledge test karein. Har sawal par 50 second milte hain.
           </p>
         </div>
 
-        {/* Stats Row */}
-        <div className="flex justify-center gap-8 sm:gap-14 mt-8 mb-10">
-          {[
-            { value: questions.length, label: "Questions" },
-            { value: "9", label: "Topics" },
-            { value: "MCQ", label: "Format" },
-          ].map((s) => (
-            <div key={s.label} className="text-center group cursor-default">
-              <p className="text-3xl sm:text-4xl font-black bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-green-300 group-hover:to-emerald-500 transition-all duration-300">
-                {s.value}
-              </p>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1 font-medium uppercase tracking-widest">
-                {s.label}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Topics */}
+        {/* Chapter Cards */}
         <div className="mb-10">
-          <h2 className="text-center text-xs text-gray-500 uppercase tracking-widest font-semibold mb-4">
-            Topics Covered
+          <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-5 text-center">
+            Chapters
           </h2>
-          <div className="flex flex-wrap justify-center gap-2">
-            {topics.map((t) => (
-              <span
-                key={t.label}
-                className="inline-flex items-center gap-1.5 bg-white/5 hover:bg-green-500/15 border border-white/10 hover:border-green-500/40 text-gray-300 hover:text-green-300 text-xs sm:text-sm font-medium px-3 py-1.5 rounded-full cursor-default transition-all duration-200 hover:scale-105"
-              >
-                <span>{t.icon}</span>
-                {t.label}
-              </span>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {chapters.map((chapter) => {
+              const isAvailable = chapter.questions.length > 0;
+              return (
+                <div
+                  key={chapter.id}
+                  className={`group relative bg-[#0e1f14] border rounded-3xl overflow-hidden transition-all duration-300
+                    ${isAvailable
+                      ? "border-white/10 hover:border-green-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
+                      : "border-white/5 opacity-60"
+                    }`}
+                >
+                  {/* Top accent line */}
+                  {isAvailable && (
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  )}
+
+                  <div className="p-6">
+                    {/* Chapter badge */}
+                    <div className="flex items-center justify-between mb-4">
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full
+                        ${isAvailable
+                          ? "bg-green-500/15 text-green-400 border border-green-500/30"
+                          : "bg-white/5 text-gray-600 border border-white/10"
+                        }`}>
+                        Chapter {chapter.id}
+                      </span>
+                      {!isAvailable && (
+                        <span className="text-xs text-gray-600 bg-white/5 px-2 py-0.5 rounded-full border border-white/8">
+                          Coming Soon
+                        </span>
+                      )}
+                      {isAvailable && (
+                        <span className="text-xs text-gray-500">
+                          {chapter.topics} Topics
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className={`font-bold text-lg leading-snug mb-2 ${isAvailable ? "text-white" : "text-gray-500"}`}>
+                      {chapter.title}
+                    </h3>
+                    <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">
+                      {chapter.description}
+                    </p>
+
+                    {/* Stats row */}
+                    {isAvailable && (
+                      <div className="flex items-center gap-4 mb-5">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {chapter.questions.length} Questions
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          50s / sawal
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          MCQ
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CTA */}
+                    {isAvailable ? (
+                      <Link
+                        href={`/quiz/${chapter.id}`}
+                        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-green-500/20 group-hover:shadow-green-500/35"
+                      >
+                        Quiz Shuru Karein
+                        <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </Link>
+                    ) : (
+                      <div className="flex items-center justify-center gap-2 w-full bg-white/5 text-gray-600 font-bold text-sm py-3 rounded-2xl border border-white/8 cursor-not-allowed">
+                        Jald Aane Wala Hai
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* How it Works */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {steps.map((s) => (
-            <div
-              key={s.num}
-              className="group bg-white/5 hover:bg-green-500/10 border border-white/10 hover:border-green-500/40 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-green-500/10 cursor-default"
-            >
-              <p className="text-3xl font-black text-green-500/25 group-hover:text-green-400/60 transition-colors duration-300 mb-2">
-                {s.num}
-              </p>
-              <p className="font-bold text-white text-sm mb-1">{s.title}</p>
-              <p className="text-gray-400 text-xs leading-5">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="flex flex-col items-center gap-3">
-          <Link
-            href="/quiz"
-            className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-lg px-10 py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-green-500/30 hover:shadow-green-500/50 hover:scale-[1.03] active:scale-[0.98] w-full sm:w-auto sm:min-w-64"
-          >
-            <span>Quiz Shuru Karein</span>
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
-          <p className="text-gray-600 text-xs">Koi account ya registration ki zaroorat nahi</p>
-        </div>
-
         {/* Divider */}
-        <div className="my-10 border-t border-white/5" />
+        <div className="my-8 border-t border-white/5" />
 
         {/* Footer */}
         <div className="text-center space-y-2">

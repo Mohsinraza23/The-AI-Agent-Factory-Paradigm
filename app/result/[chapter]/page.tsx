@@ -1,32 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { questions } from "@/data/questions";
+import { useRouter, useParams } from "next/navigation";
+import { getChapter } from "@/data/index";
 import Link from "next/link";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
 export default function ResultPage() {
   const router = useRouter();
+  const params = useParams();
+  const chapterId = params.chapter as string;
+
+  const chapter = getChapter(chapterId);
   const [answers, setAnswers] = useState<(number | null)[] | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("quizAnswers");
+    const stored = localStorage.getItem(`quizAnswers_chapter${chapterId}`);
     if (!stored) {
       router.push("/");
       return;
     }
     setAnswers(JSON.parse(stored));
-  }, [router]);
+  }, [chapterId, router]);
 
-  if (!answers) return null;
+  if (!answers || !chapter) return null;
 
   const score = answers.reduce((acc: number, ans, i) => {
-    return ans === questions[i].correct ? acc + 1 : acc;
+    return ans === chapter.questions[i].correct ? acc + 1 : acc;
   }, 0);
 
-  const percentage = Math.round((score / questions.length) * 100);
+  const percentage = Math.round((score / chapter.questions.length) * 100);
   const passed = percentage >= 50;
 
   const grade =
@@ -90,7 +94,7 @@ export default function ResultPage() {
                 <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Total Score</p>
                 <p className="text-5xl font-black text-white">
                   {score}
-                  <span className="text-2xl text-gray-500 font-semibold">/{questions.length}</span>
+                  <span className="text-2xl text-gray-500 font-semibold">/{chapter.questions.length}</span>
                 </p>
               </div>
               <div className="text-right">
@@ -115,7 +119,7 @@ export default function ResultPage() {
                 <p className="text-gray-500 text-xs mt-1">Sahi ✓</p>
               </div>
               <div className="bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 rounded-2xl p-4 text-center transition-all duration-200 cursor-default">
-                <p className="text-2xl font-black text-red-400">{questions.length - score}</p>
+                <p className="text-2xl font-black text-red-400">{chapter.questions.length - score}</p>
                 <p className="text-gray-500 text-xs mt-1">Galat ✗</p>
               </div>
               <div className="bg-white/5 hover:bg-blue-500/10 border border-white/10 hover:border-blue-500/30 rounded-2xl p-4 text-center transition-all duration-200 cursor-default">
@@ -134,7 +138,6 @@ export default function ResultPage() {
           className="group block mb-6"
         >
           <div className="relative bg-gradient-to-r from-red-600/20 via-red-500/15 to-red-600/20 hover:from-red-600/35 hover:via-red-500/25 hover:to-red-600/35 border border-red-500/30 hover:border-red-500/70 rounded-2xl px-5 py-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-red-500/15 overflow-hidden">
-            {/* Glow line top */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -164,7 +167,7 @@ export default function ResultPage() {
         </h2>
 
         <div className="space-y-3">
-          {questions.map((q, i) => {
+          {chapter.questions.map((q, i) => {
             const userAnswer = answers[i];
             const isCorrect = userAnswer === q.correct;
 
@@ -208,8 +211,11 @@ export default function ResultPage() {
                         {isCorrectOption && (
                           <span className="text-green-500 text-xs font-semibold flex-shrink-0">Sahi</span>
                         )}
-                        {isWrongChoice && (
+                        {isWrongChoice && !(userAnswer === null) && (
                           <span className="text-red-400 text-xs font-semibold flex-shrink-0">Aapka</span>
+                        )}
+                        {userAnswer === null && isCorrectOption && (
+                          <span className="text-yellow-500 text-xs font-semibold flex-shrink-0">Skip</span>
                         )}
                       </div>
                     );
@@ -223,8 +229,8 @@ export default function ResultPage() {
         {/* Action Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
           <Link
-            href="/quiz"
-            onClick={() => localStorage.removeItem("quizAnswers")}
+            href={`/quiz/${chapterId}`}
+            onClick={() => localStorage.removeItem(`quizAnswers_chapter${chapterId}`)}
             className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-green-500/40 text-white font-bold py-4 rounded-2xl text-center transition-all duration-200 hover:scale-[1.01] hover:text-green-300"
           >
             Dobara Khelein
@@ -233,7 +239,7 @@ export default function ResultPage() {
             href="/"
             className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-4 rounded-2xl text-center transition-all duration-200 shadow-lg shadow-green-500/20 hover:shadow-green-500/40 hover:scale-[1.01]"
           >
-            Home
+            Chapters Dekhein
           </Link>
         </div>
 
