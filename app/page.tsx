@@ -165,11 +165,23 @@ export default function Home() {
         <div className="my-8 border-t border-white/5" />
 
         {/* Footer */}
-        <div className="text-center space-y-2">
-          <p className="text-gray-500 text-sm">
-            Designed &amp; Created by{" "}
-            <span className="text-green-400 font-bold tracking-wide">✦ Mohsin Raza</span>
-          </p>
+        <div className="flex flex-col items-center gap-3">
+          {/* Profile photo + name */}
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <img
+                src="/mohsin.png"
+                alt="Mohsin Raza"
+                className="w-12 h-12 rounded-full object-cover object-top border-2 border-green-500/40 shadow-lg shadow-green-500/15"
+              />
+              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#070f0a]" />
+            </div>
+            <div className="text-left">
+              <p className="text-white font-bold text-sm leading-tight">Mohsin Raza</p>
+              <p className="text-green-400 text-xs">✦ Code with Mohsin</p>
+            </div>
+          </div>
+          <p className="text-gray-600 text-xs">Designed &amp; Created by Mohsin Raza</p>
           <a
             href="https://www.youtube.com/@CodewithMohsin1"
             target="_blank"
