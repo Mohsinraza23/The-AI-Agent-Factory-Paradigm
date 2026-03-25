@@ -15,8 +15,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og-image.png",
-        width: 1200,
-        height: 630,
         alt: "The AI Agent Factory Paradigm Quiz — Code with Mohsin",
       },
     ],
