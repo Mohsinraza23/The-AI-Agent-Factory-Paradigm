@@ -555,6 +555,127 @@ export const chapter14: Chapter = {
         "Create a CLAUDE.md file in the project root with these conventions — it auto-loads at every session start for all team members"
       ],
       correct: 3
+    },
+    {
+      id: 51,
+      question: "A team wants all developers to use a specific set of allowed commands, but one developer needs to experiment with a new MCP server locally. The team's settings are committed to Git. How should this be configured?",
+      options: [
+        "The developer creates a separate Git branch for their experimental settings",
+        "Add the experimental MCP server to .claude/settings.json and ask the rest of the team to ignore it",
+        "Put the team standards in ~/.claude/settings.json at the user level",
+        "Team standards in .claude/settings.json (committed to Git), personal experiment in .claude/settings.local.json (gitignored) — local overrides project"
+      ],
+      correct: 3
+    },
+    {
+      id: 52,
+      question: "A team's agent calls a documentation MCP server 50 times per day. Each call loads the full tool definition (~300 tokens) plus returns large response payloads (~15,000 tokens). What approach achieves the best token savings while keeping the functionality?",
+      options: [
+        "Reduce the number of documentation lookups from 50 to 10 per day by batching queries",
+        "Use MCP Tool Search to defer tool definition loading (~85% savings on definitions only, not on response payloads)",
+        "Cache MCP responses in a local file and have the agent read from cache",
+        "Compile the MCP workflow into a skill — the skill runs code locally outside the context window, returning only filtered results (~97-98% savings)"
+      ],
+      correct: 3
+    },
+    {
+      id: 53,
+      question: "A developer asks an AI to refactor a function. The AI suggests a new design pattern. She studies it, realizes it doesn't account for her concurrency requirements, explains the constraint, and the AI proposes a modified version that handles both. Which phases of the Three Roles Framework occurred?",
+      options: [
+        "Only AI as Teacher — the developer accepted the AI's suggestions without contributing domain knowledge",
+        "AI as Teacher (suggested new pattern), Student as Teacher (provided concurrency constraint), Convergence (jointly refined the solution)",
+        "Only Student as Teacher — the developer corrected the AI's flawed suggestion with her domain knowledge",
+        "None — this interaction is standard prompt-response behavior"
+      ],
+      correct: 1
+    },
+    {
+      id: 54,
+      question: "A startup identifies that 70% of support queries involve insurance claims and wants to build a dedicated claims agent — but they skip the general agent phase entirely. What is the most likely consequence?",
+      options: [
+        "Higher API costs will make the claims agent too expensive to operate",
+        "The claims agent lacks the real-world interaction patterns needed to handle edge cases effectively",
+        "The startup will permanently lose its general agent capabilities",
+        "Without the general agent's codebase as a foundation, the specialized claims agent must be built entirely from scratch"
+      ],
+      correct: 1
+    },
+    {
+      id: 55,
+      question: "A hospital deploys an AI triage agent in phases: first it observes nurses making decisions, then suggests alternatives alongside nurse decisions, and finally handles routine cases independently. What deployment principle does this follow?",
+      options: [
+        "Waterfall deployment — completing each phase fully before starting the next",
+        "A/B testing — comparing AI recommendations against human decisions in randomized controlled groups",
+        "Shadow mode — progressive autonomy from observation to augmentation to selective automation",
+        "Canary release — deploying to a small random subset of patients first"
+      ],
+      correct: 2
+    },
+    {
+      id: 56,
+      question: "A developer establishes project conventions on Monday. On Tuesday she starts a new Claude Code session — Claude has no knowledge of Monday's conventions and generates code violating all of them. What relationship between concepts explains this and what is the correct mitigation?",
+      options: [
+        "Statelessness requires CLAUDE.md — the AI has no inter-session memory. CLAUDE.md provides persistent context that auto-loads at every session start, compensating for statelessness",
+        "Context rot caused Tuesday's problems — Monday's conventions degraded overnight as the model's context cache expired",
+        "Using --continue to resume Monday's session is the correct solution",
+        "Claude's training data doesn't include the project's specific conventions, so it would need fine-tuning"
+      ],
+      correct: 0
+    },
+    {
+      id: 57,
+      question: "An orchestrator delegates three research tasks to separate subagents. Each returns a summary. The orchestrator's context stays clean. What would happen if the orchestrator did all three tasks itself?",
+      options: [
+        "Subagent results are always lower quality because delegation introduces communication overhead",
+        "The orchestrator would produce identical results faster since it avoids coordination latency",
+        "The orchestrator could selectively remember only relevant findings, keeping its context just as clean",
+        "Without subagent isolation, the orchestrator accumulates all exploratory content — dead ends, rejected approaches, intermediate reasoning — diluting attention for later tasks (the dirty slate problem)"
+      ],
+      correct: 3
+    },
+    {
+      id: 58,
+      question: "A consulting team lead creates three analyst teammates with full autonomy — no plan approval required, no quality hooks. One analyst spends its entire token budget on an industry tangent the client never requested. What is the PRIMARY design flaw?",
+      options: [
+        "The lead should have enabled delegate mode to prevent itself from doing any direct analysis",
+        "Three analysts is too many for a single competitive landscape study",
+        "The lead failed to configure a TaskCompleted hook that validates deliverables against the client's requirements",
+        "Skipping plan approval removed the quality gate where the lead reviews each analyst's proposed approach before resources are spent — the tangent would have been caught at plan review"
+      ],
+      correct: 3
+    },
+    {
+      id: 59,
+      question: "A development team adopts 6 of 9 AIDD pillars — skipping TDD, Linux Dev Environment, and Universal Cloud Deployment. The team lead considers this 'good enough.' What is the PRIMARY risk of partial adoption?",
+      options: [
+        "Teams using all 9 pillars will ship features approximately 40% faster",
+        "System completeness creates competitive advantage — missing quality gates (TDD), standard environments (Linux), and deployment (Cloud) creates gaps where AI-generated code enters production untested and environment-dependent",
+        "The missing three pillars are the easiest to adopt, so skipping them represents the largest missed opportunity per unit of effort",
+        "Partial adoption violates AAIF compliance requirements"
+      ],
+      correct: 1
+    },
+    {
+      id: 60,
+      question: "A lead developer asks her AI to investigate a bug, write a fix, then update documentation — all in a single conversation. By the documentation step, context is cluttered with debugging logs and abandoned fix attempts. What architectural pattern would prevent this?",
+      options: [
+        "Ask the AI to ignore all previous messages when beginning each new task phase",
+        "Use the /clear command between each task to reset the entire conversation history",
+        "Delegate each task to a separate subagent — each starts with a fresh context window, preventing cross-task contamination",
+        "Upgrade to a model with a larger context window so all three tasks fit comfortably"
+      ],
+      correct: 2
+    },
+    {
+      id: 61,
+      question: "A developer configures an autonomous iteration loop to migrate a codebase from React 16 to React 19. The completion promise is 'MIGRATION COMPLETE' and max-iterations is 50. After 35 iterations, the agent outputs 'MIGRATION COMPLETE' even though 20% of components are untouched. What is the primary design flaw?",
+      options: [
+        "The completion promise uses static exact string matching — the agent can emit it prematurely. Max-iterations is the true safety net, not the promise",
+        "Fifty iterations is far too many for a migration task",
+        "The agent is deliberately generating false completion signals to escape the iteration loop early",
+        "Replacing 'MIGRATION COMPLETE' with a shorter string like 'DONE' would fix the premature termination issue"
+      ],
+      correct: 0
     }
   ]
 };
