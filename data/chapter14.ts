@@ -676,6 +676,336 @@ export const chapter14: Chapter = {
         "Replacing 'MIGRATION COMPLETE' with a shorter string like 'DONE' would fix the premature termination issue"
       ],
       correct: 0
+    },
+    {
+      id: 62,
+      question: "What is the key insight about the relationship between General and Custom agents in the ecosystem?",
+      options: [
+        "General and Custom agents compete for the same use cases in enterprises",
+        "General Agents like Claude Code are used to build Custom Agents via SDKs",
+        "Custom agents are deprecated in favor of General agents for all use cases",
+        "General agents handle consumer markets while Custom agents serve enterprise"
+      ],
+      correct: 1
+    },
+    {
+      id: 63,
+      question: "In the presentation's framing, the '2026 AI Commercial Playbook' is positioned as:",
+      options: [
+        "A compliance guide from audits to encryption standardization",
+        "A roadmap from technical feasibility to market execution",
+        "A research summary from benchmarks to model release cycles",
+        "A UX manual from interface polish to prompt effectiveness"
+      ],
+      correct: 1
+    },
+    {
+      id: 64,
+      question: "What does 'Human-in-the-Loop (HITL)' pattern ensure in high-stakes agent deployments?",
+      options: [
+        "Real-time human supervision of all agent activities regardless of risk level",
+        "Human backup operators available to take over if agents experience failures",
+        "Human review and approval of agent decisions for edge cases and high-stakes scenarios",
+        "Continuous training data collection from human interactions for improvement"
+      ],
+      correct: 2
+    },
+    {
+      id: 65,
+      question: "The deck distinguishes 'agent' from 'chatbot' primarily by:",
+      options: [
+        "Larger context plus better memory plus faster decoding",
+        "Goal pursuit plus tool use plus stateful autonomy",
+        "Longer outputs plus richer tone plus better paraphrasing",
+        "Better UI plus safer filters plus fewer hallucinations"
+      ],
+      correct: 1
+    },
+    {
+      id: 66,
+      question: "What is the purpose of Regression Testing in the Agent Evals framework?",
+      options: [
+        "To validate that agent responses match exactly with expected templates",
+        "To ensure previous skills haven't degraded when SKILL.md is updated",
+        "To verify that new features work correctly in isolation from existing ones",
+        "To measure the statistical correlation between input and output variables"
+      ],
+      correct: 1
+    },
+    {
+      id: 67,
+      question: "What transformation in developer role does the AI revolution represent according to the presentation?",
+      options: [
+        "From developer-as-typist to developer-as-orchestrator of AI systems",
+        "From developer-as-manager to developer-as-individual-contributor model",
+        "From developer-as-generalist to developer-as-specialist in narrow domains",
+        "From developer-as-employee to developer-as-entrepreneur running AI startups"
+      ],
+      correct: 0
+    },
+    {
+      id: 68,
+      question: "The Digital SDR case study demonstrates that Digital FTEs achieve faster ROI than human teams primarily because:",
+      options: [
+        "Human teams require extended ramp-up and training periods before reaching full productivity",
+        "Digital agents use more advanced language models with higher accuracy rates than humans",
+        "Human sales representatives demand higher base salaries than the market average allows",
+        "Digital systems benefit from government subsidies that reduce their operational expenses"
+      ],
+      correct: 0
+    },
+    {
+      id: 69,
+      question: "Why is Cloud Native infrastructure (Kubernetes, Docker, Dapr) essential for the Digital FTE scaling strategy?",
+      options: [
+        "It reduces licensing costs by using open-source components exclusively",
+        "It provides built-in machine learning optimization for agent performance",
+        "It simplifies compliance with international data residency regulations",
+        "It enables auto-scaling, multi-tenancy, and high availability for 24/7 operation"
+      ],
+      correct: 3
+    },
+    {
+      id: 70,
+      question: "What is the primary function of the SKILL.md file in the Agent Skills framework?",
+      options: [
+        "To manage version control and deployment pipelines for agents",
+        "To log agent activities and performance metrics for auditing",
+        "To define modular instructions that teach agents specific workflows",
+        "To store API credentials and environment configuration variables"
+      ],
+      correct: 2
+    },
+    {
+      id: 71,
+      question: "The 'Core Strategic Decision' in the Agent Triangle presents three paths to agentic AI automation. Which correctly identifies all three?",
+      options: [
+        "General Agents (Consultant), Custom-Built AI Employees (Build), Pre-Built AI Employees (Buy)",
+        "Predictive Agents (Analyze), Generative Agents (Create), Agentic Agents (Execute)",
+        "Incubator Agents (Prototype), Specialist Agents (Scale), Marketplace Agents (Distribute)",
+        "Coding Agents (Develop), Reasoning Agents (Plan), Orchestration Agents (Coordinate)"
+      ],
+      correct: 0
+    },
+    {
+      id: 72,
+      question: "The 'AI Revolution in Software' depicts three parallel paths as:",
+      options: [
+        "Prompt engineering, prompt templating, and prompt caching",
+        "Data labeling, data warehousing, and data governance",
+        "Fine-tuning models, distilling models, and quantizing models",
+        "Coding agents, building agents, and AIOps operations"
+      ],
+      correct: 3
+    },
+    {
+      id: 73,
+      question: "'Manual Prompting vs Agent Skills' treats SKILL.md as:",
+      options: [
+        "A UI hint with minimal integration and no orchestration",
+        "Disposable text with ad-hoc, best-effort repeatability",
+        "A training dataset with model-level gradient updates",
+        "Reusable IP with deterministic, script-backed reliability"
+      ],
+      correct: 3
+    },
+    {
+      id: 74,
+      question: "According to the pricing structure breakdown, what is the recommended target for ROI payback period?",
+      options: [
+        "1-2 month payback period for enterprise agent deployments",
+        "3-6 month payback period for enterprise agent deployments",
+        "12-18 month payback period for enterprise agent deployments",
+        "6-12 month payback period for enterprise agent deployments"
+      ],
+      correct: 1
+    },
+    {
+      id: 75,
+      question: "What distribution advantage does the OpenAI Apps Ecosystem provide according to the presentation?",
+      options: [
+        "Direct pipeline to 800+ million users and 1+ million businesses globally",
+        "Access to exclusive enterprise customers with verified purchase intent",
+        "Guaranteed placement in featured app collections for maximum visibility",
+        "Reduced API costs through volume discounts and preferred pricing tiers"
+      ],
+      correct: 0
+    },
+    {
+      id: 76,
+      question: "The developer economy is being restructured faster than previous technology shifts primarily because:",
+      options: [
+        "Regulatory pressure from governments is mandating AI adoption across all software companies",
+        "AI tools are being used to build better AI tools, creating a self-accelerating improvement cycle",
+        "Venture capital has concentrated unprecedented funding into a small number of AI startups",
+        "A global shortage of developers has made automation the only viable path for companies"
+      ],
+      correct: 1
+    },
+    {
+      id: 77,
+      question: "When presenting a Digital FTE proposal to executives, why is demonstrating an 85-90% cost reduction strategically important?",
+      options: [
+        "It matches the exact ROI threshold required by most procurement policies",
+        "Cost savings of this magnitude typically exceed the threshold for executive-level approval without extensive committee review",
+        "It represents the minimum savings needed to cover the AI platform licensing fees",
+        "This percentage aligns with typical enterprise SaaS discount expectations"
+      ],
+      correct: 1
+    },
+    {
+      id: 78,
+      question: "You're writing a spec for an AI agent handling customer complaints for a luxury hotel brand. The 'Blueprint for a Perfect Agent Spec' includes as the first dimension:",
+      options: [
+        "The MCP servers it will connect to for booking data",
+        "The role identity (e.g., 'Senior Guest Relations Manager') and tone (e.g., 'Empathetic, professional, luxury-focused')",
+        "The error handling protocols for system downtime",
+        "The output format templates for complaint resolutions"
+      ],
+      correct: 1
+    },
+    {
+      id: 79,
+      question: "A company has deployed 12 production AI agents with 1 AI Product Owner and 1 Agent Engineer. According to the 'Team Structure' rule of thumb, what is likely the problem?",
+      options: [
+        "They need more AI Product Owners to manage the roadmap",
+        "They are understaffed on Agent Engineers; the ratio should be approximately 1 engineer per 3-5 agents",
+        "They should have hired an MLOps Engineer before an Agent Engineer",
+        "12 agents is above the maximum recommended for any team size"
+      ],
+      correct: 1
+    },
+    {
+      id: 80,
+      question: "The presentation defines a 'Digital FTE' as:",
+      options: [
+        "An agent priced and managed like a human employee role",
+        "A SaaS user license priced by seats and feature tiers",
+        "A database job scheduled nightly for batch reporting tasks",
+        "A microservice endpoint that returns deterministic JSON only"
+      ],
+      correct: 0
+    },
+    {
+      id: 81,
+      question: "The 'Golden Dataset' concept is used to:",
+      options: [
+        "Benchmark GPUs with standardized inference workloads",
+        "Train foundation models with large-scale generic corpora",
+        "Validate agents on real-world scenarios before deployment",
+        "Store user prompts for future personalization improvements"
+      ],
+      correct: 2
+    },
+    {
+      id: 82,
+      question: "The 'Monetization power-move' of Digital FTE pricing is that it:",
+      options: [
+        "Shifts spend from payroll budgets to UI design budgets",
+        "Shifts spend from IT tools budgets to headcount budgets",
+        "Shifts spend from HR budgets to GPU procurement budgets",
+        "Shifts spend from product budgets to compliance budgets"
+      ],
+      correct: 1
+    },
+    {
+      id: 83,
+      question: "How does Digital FTE scaling fundamentally differ from Human FTE scaling?",
+      options: [
+        "Digital FTEs scale quarterly while Human FTEs can scale on weekly cycles",
+        "Digital FTEs require proportional infrastructure while Human FTEs need fixed overhead",
+        "Digital FTEs scale logarithmically while Human FTEs scale exponentially",
+        "Digital FTEs scale exponentially through instant duplication while Human FTEs scale linearly"
+      ],
+      correct: 3
+    },
+    {
+      id: 84,
+      question: "The 'Trojan Horse' argument about Claude Code is that it is:",
+      options: [
+        "A general agent that uses code as a mechanism",
+        "A static linter that enforces style guide compliance",
+        "A code autocomplete tool that improves syntax speed",
+        "An IDE plugin that enhances editor-only productivity"
+      ],
+      correct: 0
+    },
+    {
+      id: 85,
+      question: "The 'Decision Checklist' implies if any item is 'No,' teams should:",
+      options: [
+        "Ship immediately and monitor after a production incident",
+        "Remove guardrails and increase agent creativity for coverage",
+        "Reduce prompts and rely on larger models to compensate",
+        "Pause and redesign before proceeding to automation"
+      ],
+      correct: 3
+    },
+    {
+      id: 86,
+      question: "The definition of an AI agent in the deck emphasizes a loop that includes:",
+      options: [
+        "Observing, deciding, acting, and learning toward a goal",
+        "Sampling, decoding, ranking, and formatting a completion",
+        "Training, fine-tuning, distilling, and quantizing a model",
+        "Indexing, retrieving, reranking, and summarizing documents"
+      ],
+      correct: 0
+    },
+    {
+      id: 87,
+      question: "According to the presentation, how does plugging different MCP servers transform a General Agent?",
+      options: [
+        "It modifies the agent's security permissions and access control levels",
+        "It transforms the agent into different specialist roles like Finance Auditor",
+        "It changes the underlying language model the agent uses for inference",
+        "It alters the agent's response format from text to structured data only"
+      ],
+      correct: 1
+    },
+    {
+      id: 88,
+      question: "The CoCounsel case study validates the Digital FTE monetization model because the product was:",
+      options: [
+        "Licensed as enterprise software with annual subscription fees per law firm",
+        "Priced as a virtual employee performing billable legal work, not as a productivity tool",
+        "Offered free to individual lawyers while charging enterprises for API access volume",
+        "Sold through legal technology resellers who bundled it with practice management suites"
+      ],
+      correct: 1
+    },
+    {
+      id: 89,
+      question: "The 'Agent Factory Thesis' primarily reframes the AI business opportunity as:",
+      options: [
+        "Manufacturing digital employees rather than selling traditional software",
+        "Shipping UI features rather than codifying organizational expertise",
+        "Selling token bundles rather than selling recurring subscriptions",
+        "Optimizing chat workflows rather than deploying autonomous systems"
+      ],
+      correct: 0
+    },
+    {
+      id: 90,
+      question: "A manufacturing company needs AI for quality control (camera defect detection), order processing (customer communications), and assembly (physical automation). According to the 'Future of Work' partnership model, how should responsibilities be distributed?",
+      options: [
+        "Agents handle everything including physical assembly",
+        "People provide judgment on quality decisions, agents handle digital communications, robots handle physical assembly",
+        "Robots handle all repetitive tasks including communication",
+        "People handle all customer-facing tasks while AI handles internal operations only"
+      ],
+      correct: 1
+    },
+    {
+      id: 91,
+      question: "The deck's 'Infinite Extensibility' claim depends primarily on:",
+      options: [
+        "More prompts for better tone and better instruction recall",
+        "More UI widgets for improved workflow discoverability",
+        "Larger models for emergent capabilities and fewer tools",
+        "MCP for plugging in new tools and capabilities, enabling agents to connect to any system without model retraining"
+      ],
+      correct: 3
     }
   ]
 };
