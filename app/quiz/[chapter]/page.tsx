@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 const TIMER_SECONDS = 30;
+const CIRCUMFERENCE = 2 * Math.PI * 26; // r=26
 
 export default function QuizPage() {
   const router = useRouter();
@@ -67,42 +68,41 @@ export default function QuizPage() {
   const isUrgent = timeLeft <= 10;
   const isWarning = timeLeft <= 20;
 
-  const timerBarColor = isUrgent
-    ? "bg-gradient-to-r from-red-600 to-rose-500"
-    : isWarning
-    ? "bg-gradient-to-r from-yellow-500 to-amber-400"
-    : "bg-gradient-to-r from-green-500 to-emerald-400";
-
+  const timerStroke = isUrgent ? "#ef4444" : isWarning ? "#eab308" : "#22c55e";
   const timerTextColor = isUrgent
     ? "text-red-400"
     : isWarning
     ? "text-yellow-400"
     : "text-green-400";
 
+  const dashOffset = CIRCUMFERENCE * (1 - timeLeft / TIMER_SECONDS);
+
   return (
     <main className="min-h-screen bg-[#070f0a] px-4 py-6 sm:py-8">
-      {/* Background orbs */}
+      {/* Animated background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-72 h-72 bg-green-500/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 -left-32 w-72 h-72 bg-emerald-400/8 rounded-full blur-3xl" />
+        <div className="absolute -top-32 -right-32 w-72 h-72 bg-green-500/8 rounded-full blur-3xl animate-orb-1" />
+        <div className="absolute bottom-0 -left-32 w-72 h-72 bg-emerald-400/8 rounded-full blur-3xl animate-orb-2" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">
 
         {/* Top bar */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-5 animate-fade-up">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-gray-500 hover:text-green-400 text-xs transition-colors duration-200 active:scale-95 py-2"
+            className="flex items-center gap-1.5 text-gray-500 hover:text-green-400 text-xs transition-colors duration-200 active:scale-95 py-2 px-1"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Home
           </Link>
+
           <span className="text-green-400/70 text-xs font-semibold uppercase tracking-widest">
             Chapter {chapterId}
           </span>
+
           <a
             href="https://www.youtube.com/@CodewithMohsin1"
             target="_blank"
@@ -114,14 +114,13 @@ export default function QuizPage() {
             </svg>
             Code with Mohsin
           </a>
-          {/* Mobile: just show dot */}
           <span className="sm:hidden w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         </div>
 
-        {/* Progress */}
-        <div className="flex items-center gap-3 mb-2">
+        {/* Progress bar */}
+        <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.05s" }}>
           <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">
-            Q {currentIndex + 1} / {chapter.questions.length}
+            {currentIndex + 1} / {chapter.questions.length}
           </span>
           <div className="flex-1 bg-white/5 rounded-full h-1.5 overflow-hidden">
             <div
@@ -132,28 +131,60 @@ export default function QuizPage() {
           <span className="text-gray-600 text-xs tabular-nums">{Math.round(progress)}%</span>
         </div>
 
-        {/* Timer row */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className={`flex items-center gap-1.5 ${timerTextColor} ${isUrgent ? "animate-urgent" : ""}`}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        {/* Timer row — circular SVG timer */}
+        <div className="flex items-center gap-4 mb-5 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+          {/* Circular timer */}
+          <div className={`relative flex-shrink-0 flex items-center justify-center ${isUrgent ? "animate-urgent" : ""}`}>
+            <svg width="56" height="56" className="-rotate-90">
+              {/* Background track */}
+              <circle
+                cx="28" cy="28" r="22"
+                fill="none"
+                stroke="#ffffff08"
+                strokeWidth="3.5"
+              />
+              {/* Progress arc */}
+              <circle
+                cx="28" cy="28" r="22"
+                fill="none"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                stroke={timerStroke}
+                strokeDasharray={`${2 * Math.PI * 22}`}
+                strokeDashoffset={`${2 * Math.PI * 22 * (1 - timeLeft / TIMER_SECONDS)}`}
+                style={{ transition: "stroke-dashoffset 1s linear, stroke 0.4s ease" }}
+              />
             </svg>
-            <span className="text-sm font-black tabular-nums w-6 text-right">{timeLeft}</span>
-            <span className="text-xs opacity-60">s</span>
+            <span className={`absolute text-sm font-black tabular-nums leading-none ${timerTextColor}`}>
+              {timeLeft}
+            </span>
           </div>
-          <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
-            <div
-              className={`h-2 rounded-full transition-all duration-1000 ${timerBarColor}`}
-              style={{ width: `${(timeLeft / TIMER_SECONDS) * 100}%` }}
-            />
+
+          {/* Timer label + auto-skip text */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className={`text-xs font-semibold ${timerTextColor}`}>
+                {isUrgent ? "Jaldi karein!" : isWarning ? "Waqt khatam ho raha hai" : "Waqt bacha hua"}
+              </span>
+              <span className="text-gray-700 text-xs hidden sm:inline">Auto-skip on 0</span>
+            </div>
+            {/* Thin color bar */}
+            <div className="w-full bg-white/5 rounded-full h-1 overflow-hidden">
+              <div
+                className="h-1 rounded-full transition-all duration-1000"
+                style={{
+                  width: `${(timeLeft / TIMER_SECONDS) * 100}%`,
+                  background: timerStroke,
+                }}
+              />
+            </div>
           </div>
-          <span className="text-gray-700 text-xs hidden sm:inline">Auto-skip</span>
         </div>
 
-        {/* Question card — key forces re-mount for slide animation */}
+        {/* Question card */}
         <div
           key={cardKey}
-          className="animate-slide-in bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4"
+          className="animate-slide-in bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4 animate-glow"
         >
           {/* Question header */}
           <div className="px-5 py-4 border-b border-white/5 bg-gradient-to-br from-green-500/5 to-transparent">
@@ -181,7 +212,7 @@ export default function QuizPage() {
                     ${
                       isSelected
                         ? "border-green-500/60 bg-green-500/15 shadow-lg shadow-green-500/10 scale-[1.01]"
-                        : "border-white/8 bg-white/2 hover:border-green-500/30 hover:bg-green-500/8 active:bg-green-500/12"
+                        : "border-white/8 bg-white/2 hover:border-green-500/30 hover:bg-green-500/8 active:bg-green-500/12 active:scale-[0.99]"
                     }`}
                 >
                   <span
@@ -198,9 +229,11 @@ export default function QuizPage() {
                     {option}
                   </span>
                   {isSelected && (
-                    <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <span className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
                   )}
                 </button>
               );
@@ -215,7 +248,7 @@ export default function QuizPage() {
           className={`w-full py-4 rounded-2xl font-black text-base transition-all duration-200
             ${
               selected !== null
-                ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 active:scale-[0.98]"
+                ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 active:scale-[0.98] hover:scale-[1.01]"
                 : "bg-white/4 text-gray-600 cursor-not-allowed"
             }`}
         >
@@ -223,7 +256,7 @@ export default function QuizPage() {
         </button>
 
         <p className="text-center text-gray-700 text-xs mt-3">
-          Jawab na dein to {timeLeft}s baad skip ho jaye ga
+          Jawab na dein to {timeLeft}s baad auto-skip ho jaye ga
         </p>
       </div>
     </main>

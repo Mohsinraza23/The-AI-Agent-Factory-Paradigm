@@ -6,11 +6,11 @@ import { chapters } from "@/data/index";
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#070f0a] text-white overflow-x-hidden">
-      {/* Gradient Orbs */}
+      {/* Animated Gradient Orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-green-500/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -right-40 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-green-600/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-green-500/15 rounded-full blur-3xl animate-orb-1" />
+        <div className="absolute top-1/3 -right-40 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl animate-orb-2" />
+        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-green-600/10 rounded-full blur-3xl animate-orb-3" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 sm:py-14">
@@ -20,7 +20,7 @@ export default function Home() {
           href="https://www.youtube.com/@CodewithMohsin1"
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center justify-between bg-gradient-to-r from-red-600/15 to-red-500/10 hover:from-red-600/25 hover:to-red-500/20 border border-red-500/25 hover:border-red-500/60 rounded-2xl px-5 py-4 mb-8 transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-red-500/10"
+          className="animate-fade-up group flex items-center justify-between bg-gradient-to-r from-red-600/15 to-red-500/10 hover:from-red-600/25 hover:to-red-500/20 border border-red-500/25 hover:border-red-500/60 rounded-2xl px-5 py-4 mb-8 transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-red-500/10"
         >
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-600/30">
@@ -44,7 +44,7 @@ export default function Home() {
         </a>
 
         {/* Hero */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-10 animate-fade-up" style={{ animationDelay: "0.08s" }}>
           <div className="flex justify-center mb-5">
             <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-300 text-xs font-semibold px-4 py-2 rounded-full">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -68,16 +68,17 @@ export default function Home() {
             Chapters
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {chapters.map((chapter) => {
+            {chapters.map((chapter, idx) => {
               const isAvailable = chapter.questions.length > 0;
               return (
                 <div
                   key={chapter.id}
-                  className={`group relative bg-[#0e1f14] border rounded-3xl overflow-hidden transition-all duration-300
+                  className={`animate-fade-up group relative bg-[#0e1f14] border rounded-3xl overflow-hidden transition-all duration-300
                     ${isAvailable
                       ? "border-white/10 hover:border-green-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
                       : "border-white/5 opacity-60"
                     }`}
+                  style={{ animationDelay: `${0.12 + idx * 0.08}s` }}
                 >
                   {/* Top accent line */}
                   {isAvailable && (

@@ -44,10 +44,10 @@ export default function ResultPage() {
 
   return (
     <main className="min-h-screen bg-[#070f0a] px-4 py-8">
-      {/* Background orbs */}
+      {/* Animated Background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-80 h-80 bg-green-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 -left-32 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl" />
+        <div className="absolute -top-32 -right-32 w-80 h-80 bg-green-500/10 rounded-full blur-3xl animate-orb-1" />
+        <div className="absolute bottom-0 -left-32 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl animate-orb-2" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">
@@ -74,7 +74,7 @@ export default function ResultPage() {
         </div>
 
         {/* Score Card */}
-        <div className="animate-fade-up bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5">
+        <div className="animate-fade-up animate-glow bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5" style={{ animationDelay: "0.05s" }}>
           {/* Banner */}
           <div className={`px-6 py-5 flex items-center justify-between ${passed ? "bg-gradient-to-r from-green-600 to-emerald-500" : "bg-gradient-to-r from-red-700 to-rose-600"}`}>
             <div>
