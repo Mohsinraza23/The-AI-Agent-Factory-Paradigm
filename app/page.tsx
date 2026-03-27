@@ -162,6 +162,43 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Practice Mode Section */}
+        <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+          <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-5 text-center">
+            Practice Mode
+          </h2>
+          <Link
+            href="/practice/chapter14bc"
+            className="group relative flex items-center justify-between bg-[#0e1f14] border border-white/10 hover:border-blue-500/50 rounded-3xl p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/8 overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-white font-bold text-sm leading-tight">Chapter 14 — Section B & C</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">New</span>
+                </div>
+                <p className="text-gray-500 text-xs">Extensibility & Teams — 74 Advanced MCQs</p>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <span className="text-gray-600 text-[10px]">8 Topics</span>
+                  <span className="w-1 h-1 rounded-full bg-gray-700" />
+                  <span className="text-yellow-500 text-[10px] font-semibold">Explanation har sawal ke baad</span>
+                  <span className="w-1 h-1 rounded-full bg-gray-700" />
+                  <span className="text-gray-600 text-[10px]">No timer</span>
+                </div>
+              </div>
+            </div>
+            <svg className="w-5 h-5 text-gray-600 group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+
         {/* Divider */}
         <div className="my-8 border-t border-white/5" />
 
