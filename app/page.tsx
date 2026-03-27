@@ -149,6 +149,62 @@ export default function Home() {
               );
             })}
 
+            {/* Chapter 14 D — Practice Card */}
+            <div
+              className="animate-fade-up group relative bg-[#0e1f14] border border-white/10 hover:border-green-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
+              style={{ animationDelay: `${0.12 + (chapters.length + 1) * 0.08}s` }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">
+                      Chapter 14
+                    </span>
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-green-500/25 to-emerald-500/20 text-green-300 border border-green-400/40 tracking-wide">
+                      D
+                    </span>
+                  </div>
+                  <span className="text-xs text-gray-500">11 Topics</span>
+                </div>
+                <h3 className="font-bold text-lg leading-snug mb-2 text-white">
+                  Cowork &amp; Advanced Features
+                </h3>
+                <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">
+                  Cowork Story, Dispatch, Computer Use, Browser Integration, Custom Visuals, Projects &amp; Scheduling
+                </p>
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    70 Questions
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    Explanation
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    MCQ
+                  </div>
+                </div>
+                <Link
+                  href="/practice/chapter14d"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-green-500/20 group-hover:shadow-green-500/35"
+                >
+                  Practice Karein
+                  <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
             {/* Chapter 14 B & C — Practice Card */}
             <div
               className="animate-fade-up group relative bg-[#0e1f14] border border-white/10 hover:border-green-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
