@@ -6,7 +6,7 @@ import { getChapter } from "@/data/index";
 import Link from "next/link";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
-const TIMER_SECONDS = 30;
+const TIMER_SECONDS = 50;
 const CIRCUMFERENCE = 2 * Math.PI * 26; // r=26
 
 export default function QuizPage() {

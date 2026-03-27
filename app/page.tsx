@@ -58,7 +58,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-gray-400 text-base max-w-lg mx-auto">
-            Chapter-wise MCQ quizzes — apni knowledge test karein. Har sawal par 30 second milte hain.
+            Chapter-wise MCQ quizzes — apni knowledge test karein. Har sawal par 50 second milte hain.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function Home() {
                           <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          30s / sawal
+                          50s / sawal
                         </div>
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
                           <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
