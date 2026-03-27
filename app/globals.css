@@ -18,7 +18,7 @@ body {
 /* ── Custom scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #16a34a55; border-radius: 999px; }
+::-webkit-scrollbar-thumb { background: #6366f155; border-radius: 999px; }
 
 /* ── Page entry ── */
 @keyframes fadeInUp {
@@ -72,15 +72,15 @@ body {
   100% { background-position: 200% center; }
 }
 .shimmer-border {
-  background: linear-gradient(90deg, transparent 0%, #22c55e55 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #6366f155 50%, transparent 100%);
   background-size: 200% auto;
   animation: shimmer 3s linear infinite;
 }
 
 /* ── Glow pulse ── */
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px #22c55e20; }
-  50%       { box-shadow: 0 0 35px #22c55e45; }
+  0%, 100% { box-shadow: 0 0 15px #6366f120; }
+  50%       { box-shadow: 0 0 35px #6366f145; }
 }
 .animate-glow { animation: glowPulse 2.5s ease-in-out infinite; }
 

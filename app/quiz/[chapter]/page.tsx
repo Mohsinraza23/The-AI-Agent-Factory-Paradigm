@@ -7,13 +7,11 @@ import Link from "next/link";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 const TIMER_SECONDS = 50;
-const CIRCUMFERENCE = 2 * Math.PI * 26; // r=26
 
 export default function QuizPage() {
   const router = useRouter();
   const params = useParams();
   const chapterId = params.chapter as string;
-
   const chapter = getChapter(chapterId);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,25 +21,18 @@ export default function QuizPage() {
   const [cardKey, setCardKey] = useState(0);
 
   useEffect(() => {
-    if (!chapter || chapter.questions.length === 0) {
-      router.push("/");
-    }
+    if (!chapter || chapter.questions.length === 0) router.push("/");
   }, [chapter, router]);
 
   const handleNext = useCallback(
     (auto = false) => {
       if (!chapter) return;
       const newAnswers = [...answers, auto ? null : selected];
-
       if (currentIndex + 1 >= chapter.questions.length) {
-        localStorage.setItem(
-          `quizAnswers_chapter${chapterId}`,
-          JSON.stringify(newAnswers)
-        );
+        localStorage.setItem(`quizAnswers_chapter${chapterId}`, JSON.stringify(newAnswers));
         router.push(`/result/${chapterId}`);
         return;
       }
-
       setAnswers(newAnswers);
       setCurrentIndex((i) => i + 1);
       setSelected(null);
@@ -53,10 +44,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     if (!chapter || chapter.questions.length === 0) return;
-    if (timeLeft === 0) {
-      handleNext(true);
-      return;
-    }
+    if (timeLeft === 0) { handleNext(true); return; }
     const t = setTimeout(() => setTimeLeft((s) => s - 1), 1000);
     return () => clearTimeout(t);
   }, [timeLeft, chapter, handleNext]);
@@ -68,99 +56,62 @@ export default function QuizPage() {
   const isUrgent = timeLeft <= 10;
   const isWarning = timeLeft <= 20;
 
-  const timerStroke = isUrgent ? "#ef4444" : isWarning ? "#eab308" : "#22c55e";
-  const timerTextColor = isUrgent
-    ? "text-red-400"
-    : isWarning
-    ? "text-yellow-400"
-    : "text-green-400";
-
-  const dashOffset = CIRCUMFERENCE * (1 - timeLeft / TIMER_SECONDS);
+  const timerStroke = isUrgent ? "#ef4444" : isWarning ? "#eab308" : "#6366f1";
+  const timerTextColor = isUrgent ? "text-red-400" : isWarning ? "text-yellow-400" : "text-indigo-400";
 
   return (
-    <main className="min-h-screen bg-[#070f0a] px-4 py-6 sm:py-8">
-      {/* Animated background orbs */}
+    <main className="min-h-screen bg-[#07080f] px-4 py-6 sm:py-8">
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-72 h-72 bg-green-500/8 rounded-full blur-3xl animate-orb-1" />
-        <div className="absolute bottom-0 -left-32 w-72 h-72 bg-emerald-400/8 rounded-full blur-3xl animate-orb-2" />
+        <div className="absolute -top-32 -right-32 w-72 h-72 bg-indigo-500/8 rounded-full blur-3xl animate-orb-1" />
+        <div className="absolute bottom-0 -left-32 w-72 h-72 bg-violet-400/8 rounded-full blur-3xl animate-orb-2" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">
 
         {/* Top bar */}
         <div className="flex items-center justify-between mb-5 animate-fade-up">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-gray-500 hover:text-green-400 text-xs transition-colors duration-200 active:scale-95 py-2 px-1"
-          >
+          <Link href="/" className="flex items-center gap-1.5 text-gray-500 hover:text-indigo-400 text-xs transition-colors duration-200 active:scale-95 py-2 px-1">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Home
           </Link>
-
-          <span className="text-green-400/70 text-xs font-semibold uppercase tracking-widest">
-            Chapter {chapterId}
-          </span>
-
-          <a
-            href="https://www.youtube.com/@CodewithMohsin1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 text-gray-600 hover:text-red-400 text-xs transition-colors duration-200"
-          >
+          <span className="text-indigo-400/70 text-xs font-semibold uppercase tracking-widest">Chapter {chapterId}</span>
+          <a href="https://www.youtube.com/@CodewithMohsin1" target="_blank" rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 text-gray-600 hover:text-red-400 text-xs transition-colors duration-200">
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
             </svg>
             Code with Mohsin
           </a>
-          <span className="sm:hidden w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="sm:hidden w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
         </div>
 
         {/* Progress bar */}
         <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.05s" }}>
-          <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">
-            {currentIndex + 1} / {chapter.questions.length}
-          </span>
+          <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">{currentIndex + 1} / {chapter.questions.length}</span>
           <div className="flex-1 bg-white/5 rounded-full h-1.5 overflow-hidden">
-            <div
-              className="h-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
+            <div className="h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-400 transition-all duration-500" style={{ width: `${progress}%` }} />
           </div>
           <span className="text-gray-600 text-xs tabular-nums">{Math.round(progress)}%</span>
         </div>
 
-        {/* Timer row — circular SVG timer */}
+        {/* Circular Timer */}
         <div className="flex items-center gap-4 mb-5 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          {/* Circular timer */}
           <div className={`relative flex-shrink-0 flex items-center justify-center ${isUrgent ? "animate-urgent" : ""}`}>
             <svg width="56" height="56" className="-rotate-90">
-              {/* Background track */}
+              <circle cx="28" cy="28" r="22" fill="none" stroke="#ffffff08" strokeWidth="3.5" />
               <circle
                 cx="28" cy="28" r="22"
-                fill="none"
-                stroke="#ffffff08"
-                strokeWidth="3.5"
-              />
-              {/* Progress arc */}
-              <circle
-                cx="28" cy="28" r="22"
-                fill="none"
-                strokeWidth="3.5"
-                strokeLinecap="round"
+                fill="none" strokeWidth="3.5" strokeLinecap="round"
                 stroke={timerStroke}
                 strokeDasharray={`${2 * Math.PI * 22}`}
                 strokeDashoffset={`${2 * Math.PI * 22 * (1 - timeLeft / TIMER_SECONDS)}`}
                 style={{ transition: "stroke-dashoffset 1s linear, stroke 0.4s ease" }}
               />
             </svg>
-            <span className={`absolute text-sm font-black tabular-nums leading-none ${timerTextColor}`}>
-              {timeLeft}
-            </span>
+            <span className={`absolute text-sm font-black tabular-nums leading-none ${timerTextColor}`}>{timeLeft}</span>
           </div>
-
-          {/* Timer label + auto-skip text */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1.5">
               <span className={`text-xs font-semibold ${timerTextColor}`}>
@@ -168,39 +119,23 @@ export default function QuizPage() {
               </span>
               <span className="text-gray-700 text-xs hidden sm:inline">Auto-skip on 0</span>
             </div>
-            {/* Thin color bar */}
             <div className="w-full bg-white/5 rounded-full h-1 overflow-hidden">
-              <div
-                className="h-1 rounded-full transition-all duration-1000"
-                style={{
-                  width: `${(timeLeft / TIMER_SECONDS) * 100}%`,
-                  background: timerStroke,
-                }}
-              />
+              <div className="h-1 rounded-full transition-all duration-1000" style={{ width: `${(timeLeft / TIMER_SECONDS) * 100}%`, background: timerStroke }} />
             </div>
           </div>
         </div>
 
         {/* Question card */}
-        <div
-          key={cardKey}
-          className="animate-slide-in bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4 animate-glow"
-        >
-          {/* Question header */}
-          <div className="px-5 py-4 border-b border-white/5 bg-gradient-to-br from-green-500/5 to-transparent">
+        <div key={cardKey} className="animate-slide-in bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4 animate-glow">
+          <div className="px-5 py-4 border-b border-white/5 bg-gradient-to-br from-indigo-500/5 to-transparent">
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 mt-0.5">
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-green-500/15 border border-green-500/25 text-green-400 text-xs font-black">
-                  {currentIndex + 1}
-                </span>
-              </div>
-              <p className="text-white font-semibold text-sm sm:text-base leading-6 flex-1">
-                {question.question}
-              </p>
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-indigo-500/15 border border-indigo-500/25 text-indigo-400 text-xs font-black flex-shrink-0 mt-0.5">
+                {currentIndex + 1}
+              </span>
+              <p className="text-white font-semibold text-sm sm:text-base leading-6 flex-1">{question.question}</p>
             </div>
           </div>
 
-          {/* Options */}
           <div className="p-3 sm:p-4 space-y-2">
             {question.options.map((option, i) => {
               const isSelected = selected === i;
@@ -209,28 +144,21 @@ export default function QuizPage() {
                   key={i}
                   onClick={() => setSelected(i)}
                   className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border text-left transition-all duration-200
-                    ${
-                      isSelected
-                        ? "border-green-500/60 bg-green-500/15 shadow-lg shadow-green-500/10 scale-[1.01]"
-                        : "border-white/8 bg-white/2 hover:border-green-500/30 hover:bg-green-500/8 active:bg-green-500/12 active:scale-[0.99]"
+                    ${isSelected
+                      ? "border-indigo-500/60 bg-indigo-500/15 shadow-lg shadow-indigo-500/10 scale-[1.01]"
+                      : "border-white/8 bg-white/2 hover:border-indigo-500/30 hover:bg-indigo-500/8 active:bg-indigo-500/12 active:scale-[0.99]"
                     }`}
                 >
-                  <span
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black flex-shrink-0 transition-all duration-200
-                      ${
-                        isSelected
-                          ? "bg-green-500 text-white shadow-md shadow-green-500/40"
-                          : "bg-white/6 text-gray-400"
-                      }`}
-                  >
+                  <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black flex-shrink-0 transition-all duration-200
+                    ${isSelected ? "bg-indigo-500 text-white shadow-md shadow-indigo-500/40" : "bg-white/6 text-gray-400"}`}>
                     {OPTION_LABELS[i]}
                   </span>
                   <span className={`text-sm flex-1 leading-5 transition-colors duration-200 ${isSelected ? "text-white" : "text-gray-400"}`}>
                     {option}
                   </span>
                   {isSelected && (
-                    <span className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
@@ -246,10 +174,9 @@ export default function QuizPage() {
           onClick={() => handleNext(false)}
           disabled={selected === null}
           className={`w-full py-4 rounded-2xl font-black text-base transition-all duration-200
-            ${
-              selected !== null
-                ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 active:scale-[0.98] hover:scale-[1.01]"
-                : "bg-white/4 text-gray-600 cursor-not-allowed"
+            ${selected !== null
+              ? "bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-[0.98] hover:scale-[1.01]"
+              : "bg-white/4 text-gray-600 cursor-not-allowed"
             }`}
         >
           {currentIndex + 1 === chapter.questions.length ? "Nateeja Dekhein →" : "Agla Sawal →"}

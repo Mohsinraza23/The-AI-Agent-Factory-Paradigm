@@ -71,7 +71,7 @@ export default function PracticePage() {
     { label: "F", color: "text-red-400" };
 
   return (
-    <main className="min-h-screen bg-[#070f0a] px-4 py-6 sm:py-8">
+    <main className="min-h-screen bg-[#07080f] px-4 py-6 sm:py-8">
       {/* Background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-500/6 rounded-full blur-3xl animate-orb-1" />
@@ -122,7 +122,7 @@ export default function PracticePage() {
         {/* Done Screen */}
         {done ? (
           <div className="animate-pop">
-            <div className="bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5 animate-glow">
+            <div className="bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5 animate-glow">
               <div className={`px-6 py-5 ${percentage >= 50 ? "bg-gradient-to-r from-green-600 to-emerald-500" : "bg-gradient-to-r from-red-700 to-rose-600"}`}>
                 <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-1">
                   {percentage >= 50 ? "Mubarak Ho!" : "Mehnat Karein!"}
@@ -216,7 +216,7 @@ export default function PracticePage() {
             {/* Question card */}
             <div
               key={currentIndex}
-              className="animate-slide-in bg-[#0d1f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4"
+              className="animate-slide-in bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-4"
             >
               <div className="px-5 py-4 border-b border-white/5 bg-gradient-to-br from-blue-500/4 to-transparent">
                 <div className="flex items-start gap-3">
@@ -287,7 +287,7 @@ export default function PracticePage() {
 
               {/* Explanation */}
               {revealed && (
-                <div className="animate-fade-up mx-3 sm:mx-4 mb-4 p-4 bg-[#0a1a0e] border border-white/8 rounded-2xl">
+                <div className="animate-fade-up mx-3 sm:mx-4 mb-4 p-4 bg-[#0a0a1e] border border-white/8 rounded-2xl">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-5 h-5 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
                       <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">

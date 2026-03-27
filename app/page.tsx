@@ -5,12 +5,12 @@ import { chapters } from "@/data/index";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#070f0a] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#07080f] text-white overflow-x-hidden">
       {/* Animated Gradient Orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-green-500/15 rounded-full blur-3xl animate-orb-1" />
-        <div className="absolute top-1/3 -right-40 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl animate-orb-2" />
-        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-green-600/10 rounded-full blur-3xl animate-orb-3" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-orb-1" />
+        <div className="absolute top-1/3 -right-40 w-80 h-80 bg-violet-400/10 rounded-full blur-3xl animate-orb-2" />
+        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-orb-3" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-10 sm:py-14">
@@ -46,14 +46,14 @@ export default function Home() {
         {/* Hero */}
         <div className="text-center mb-10 animate-fade-up" style={{ animationDelay: "0.08s" }}>
           <div className="flex justify-center mb-5">
-            <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-300 text-xs font-semibold px-4 py-2 rounded-full">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full">
+              <span className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" />
               Exam Preparation Quiz
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight mb-3">
             <span className="text-white">Code with </span>
-            <span className="bg-gradient-to-r from-green-400 via-emerald-300 to-lime-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent">
               Mohsin
             </span>
           </h1>
@@ -73,21 +73,21 @@ export default function Home() {
               return (
                 <div
                   key={chapter.id}
-                  className={`animate-fade-up group relative bg-[#0e1f14] border rounded-3xl overflow-hidden transition-all duration-300
+                  className={`animate-fade-up group relative bg-[#0e0e1f] border rounded-3xl overflow-hidden transition-all duration-300
                     ${isAvailable
-                      ? "border-white/10 hover:border-green-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
+                      ? "border-white/10 hover:border-indigo-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
                       : "border-white/5 opacity-60"
                     }`}
                   style={{ animationDelay: `${0.12 + idx * 0.08}s` }}
                 >
                   {isAvailable && (
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   )}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <span className={`text-xs font-bold px-3 py-1 rounded-full
                         ${isAvailable
-                          ? "bg-green-500/15 text-green-400 border border-green-500/30"
+                          ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30"
                           : "bg-white/5 text-gray-600 border border-white/10"
                         }`}>
                         Chapter {chapter.id}
@@ -110,7 +110,7 @@ export default function Home() {
                     {isAvailable && (
                       <div className="flex items-center gap-4 mb-5">
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                          <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           {chapter.questions.length} Questions
@@ -122,7 +122,7 @@ export default function Home() {
                           50s / sawal
                         </div>
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                          <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           MCQ
@@ -132,7 +132,7 @@ export default function Home() {
                     {isAvailable ? (
                       <Link
                         href={`/quiz/${chapter.id}`}
-                        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-green-500/20 group-hover:shadow-green-500/35"
+                        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
                       >
                         Quiz Shuru Karein
                         <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,17 +151,17 @@ export default function Home() {
 
             {/* Chapter 14 D — Practice Card */}
             <div
-              className="animate-fade-up group relative bg-[#0e1f14] border border-white/10 hover:border-green-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
+              className="animate-fade-up group relative bg-[#0e0e1f] border border-white/10 hover:border-indigo-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
               style={{ animationDelay: `${0.12 + (chapters.length + 1) * 0.08}s` }}
             >
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
                       Chapter 14
                     </span>
-                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-green-500/25 to-emerald-500/20 text-green-300 border border-green-400/40 tracking-wide">
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/25 to-violet-500/20 text-indigo-300 border border-indigo-400/40 tracking-wide">
                       D
                     </span>
                   </div>
@@ -175,7 +175,7 @@ export default function Home() {
                 </p>
                 <div className="flex items-center gap-4 mb-5">
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     70 Questions
@@ -187,7 +187,7 @@ export default function Home() {
                     Explanation
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     MCQ
@@ -195,7 +195,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/practice/chapter14d"
-                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-green-500/20 group-hover:shadow-green-500/35"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
                 >
                   Practice Karein
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,17 +207,17 @@ export default function Home() {
 
             {/* Chapter 14 B & C — Practice Card */}
             <div
-              className="animate-fade-up group relative bg-[#0e1f14] border border-white/10 hover:border-green-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-500/10"
+              className="animate-fade-up group relative bg-[#0e0e1f] border border-white/10 hover:border-indigo-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
               style={{ animationDelay: `${0.12 + chapters.length * 0.08}s` }}
             >
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
                       Chapter 14
                     </span>
-                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-green-500/25 to-emerald-500/20 text-green-300 border border-green-400/40 tracking-wide">
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/25 to-violet-500/20 text-indigo-300 border border-indigo-400/40 tracking-wide">
                       B &amp; C
                     </span>
                   </div>
@@ -231,7 +231,7 @@ export default function Home() {
                 </p>
                 <div className="flex items-center gap-4 mb-5">
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     74 Questions
@@ -243,7 +243,7 @@ export default function Home() {
                     Explanation
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     MCQ
@@ -251,7 +251,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/practice/chapter14bc"
-                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-green-500/20 group-hover:shadow-green-500/35"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
                 >
                   Practice Karein
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,10 +268,9 @@ export default function Home() {
 
         {/* Footer */}
         <div className="flex flex-col items-center gap-3">
-          {/* Profile photo + name */}
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0">
-              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-green-500/40 shadow-lg shadow-green-500/20">
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-indigo-500/40 shadow-lg shadow-indigo-500/20">
                 <img
                   src="/mohsin.png"
                   alt="Mohsin Raza"
@@ -279,11 +278,11 @@ export default function Home() {
                   style={{ objectPosition: "50% 18%", transform: "scale(1.5)", transformOrigin: "50% 18%" }}
                 />
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#070f0a]" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-indigo-400 rounded-full border-2 border-[#07080f]" />
             </div>
             <div className="text-left">
               <p className="text-white font-bold text-sm leading-tight">Mohsin Raza</p>
-              <p className="text-green-400 text-xs">✦ Code with Mohsin</p>
+              <p className="text-indigo-400 text-xs">✦ Code with Mohsin</p>
             </div>
           </div>
           <p className="text-gray-600 text-xs">Designed &amp; Created by Mohsin Raza</p>
