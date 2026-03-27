@@ -157,9 +157,14 @@ export default function Home() {
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">
-                    Chapter 14 B&C
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">
+                      Chapter 14
+                    </span>
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-green-500/25 to-emerald-500/20 text-green-300 border border-green-400/40 tracking-wide">
+                      B &amp; C
+                    </span>
+                  </div>
                   <span className="text-xs text-gray-500">8 Topics</span>
                 </div>
                 <h3 className="font-bold text-lg leading-snug mb-2 text-white">
