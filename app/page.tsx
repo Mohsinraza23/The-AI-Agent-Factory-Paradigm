@@ -275,7 +275,7 @@ export default function Home() {
                   src="/mohsin.png"
                   alt="Mohsin Raza"
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "50% 16%", transform: "scale(2.5)", transformOrigin: "50% 16%" }}
+                  style={{ objectPosition: "50% 5%", transform: "scale(4)", transformOrigin: "50% 5%" }}
                 />
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-indigo-400 rounded-full border-2 border-[#07080f]" />
