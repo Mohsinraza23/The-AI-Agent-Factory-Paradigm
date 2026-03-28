@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { chapter14d, TOPICS_D } from "@/data/chapter14d";
+
+const TIMER_SECONDS = 50;
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
@@ -16,8 +18,18 @@ export default function PracticePageD() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [hintsUsed, setHintsUsed] = useState(0);
-  const [hintActive, setHintActive] = useState(false); // hint used on current question
+  const [hintActive, setHintActive] = useState(false);
   const [hintPenaltyThisQ, setHintPenaltyThisQ] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
+
+  useEffect(() => { setTimeLeft(TIMER_SECONDS); }, [currentIndex, activeTopic]);
+
+  useEffect(() => {
+    if (done || revealed) return;
+    if (timeLeft === 0) { setRevealed(true); return; }
+    const t = setTimeout(() => setTimeLeft((n) => n - 1), 1000);
+    return () => clearTimeout(t);
+  }, [timeLeft, done, revealed]);
 
   const questions = useMemo(
     () =>
@@ -39,6 +51,7 @@ export default function PracticePageD() {
     setHintsUsed(0);
     setHintActive(false);
     setHintPenaltyThisQ(false);
+    setTimeLeft(TIMER_SECONDS);
   }
 
   function handleHint() {
@@ -79,6 +92,7 @@ export default function PracticePageD() {
     setHintsUsed(0);
     setHintActive(false);
     setHintPenaltyThisQ(false);
+    setTimeLeft(TIMER_SECONDS);
   }
 
   const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
@@ -232,6 +246,27 @@ export default function PracticePageD() {
                 {score} sahi
               </span>
             </div>
+
+            {/* Timer */}
+            {!revealed && (
+              <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.09s" }}>
+                <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-1000 ${
+                      timeLeft <= 10 ? "bg-gradient-to-r from-red-500 to-rose-400"
+                      : timeLeft <= 20 ? "bg-gradient-to-r from-yellow-500 to-amber-400"
+                      : "bg-gradient-to-r from-violet-500 to-fuchsia-400"
+                    }`}
+                    style={{ width: `${(timeLeft / TIMER_SECONDS) * 100}%` }}
+                  />
+                </div>
+                <span className={`text-xs font-black tabular-nums w-8 text-right ${
+                  timeLeft <= 10 ? "text-red-400 animate-urgent"
+                  : timeLeft <= 20 ? "text-yellow-400"
+                  : "text-violet-400"
+                }`}>{timeLeft}s</span>
+              </div>
+            )}
 
             {/* Topic badge + hint warning */}
             <div className="flex items-center gap-2 mb-3 animate-fade-up flex-wrap" style={{ animationDelay: "0.1s" }}>

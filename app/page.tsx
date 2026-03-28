@@ -148,32 +148,40 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {chapters.map((chapter, idx) => {
               const isAvailable = chapter.questions.length > 0;
+              const palettes = [
+                { hover: "hover:border-indigo-500/50 hover:shadow-indigo-500/10", glow: "via-indigo-500/50", badge: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30", btn: "from-indigo-500 to-violet-500 shadow-indigo-500/20 group-hover:shadow-indigo-500/35", qIcon: "text-indigo-500", tIcon: "text-violet-500", label: "Quiz Mode", labelColor: "text-indigo-400/70 bg-indigo-500/10 border-indigo-500/20" },
+                { hover: "hover:border-blue-500/50 hover:shadow-blue-500/10", glow: "via-blue-500/50", badge: "bg-blue-500/15 text-blue-400 border-blue-500/30", btn: "from-blue-500 to-sky-500 shadow-blue-500/20 group-hover:shadow-blue-500/35", qIcon: "text-blue-500", tIcon: "text-sky-500", label: "Quiz Mode", labelColor: "text-blue-400/70 bg-blue-500/10 border-blue-500/20" },
+                { hover: "hover:border-purple-500/50 hover:shadow-purple-500/10", glow: "via-purple-500/50", badge: "bg-purple-500/15 text-purple-400 border-purple-500/30", btn: "from-purple-600 to-violet-500 shadow-purple-500/20 group-hover:shadow-purple-500/35", qIcon: "text-purple-500", tIcon: "text-fuchsia-500", label: "Quiz Mode", labelColor: "text-purple-400/70 bg-purple-500/10 border-purple-500/20" },
+              ];
+              const p = palettes[idx % palettes.length];
               return (
                 <div
                   key={chapter.id}
                   className={`animate-fade-up group relative bg-[#0e0e1f] border rounded-3xl overflow-hidden transition-all duration-300
                     ${isAvailable
-                      ? "border-white/10 hover:border-indigo-500/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
+                      ? `border-white/10 ${p.hover} hover:-translate-y-1 hover:shadow-xl`
                       : "border-white/5 opacity-60"
                     }`}
                   style={{ animationDelay: `${0.12 + idx * 0.08}s` }}
                 >
                   {isAvailable && (
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${p.glow} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                   )}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <span className={`text-xs font-bold px-3 py-1 rounded-full
-                        ${isAvailable
-                          ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30"
-                          : "bg-white/5 text-gray-600 border border-white/10"
-                        }`}>
-                        Chapter {chapter.id}
-                      </span>
-                      {!isAvailable && (
-                        <span className="text-xs text-gray-600 bg-white/5 px-2 py-0.5 rounded-full border border-white/8">
-                          Coming Soon
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full border
+                          ${isAvailable ? p.badge : "bg-white/5 text-gray-600 border-white/10"}`}>
+                          Chapter {chapter.id}
                         </span>
+                        {isAvailable && (
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${p.labelColor}`}>
+                            {p.label}
+                          </span>
+                        )}
+                      </div>
+                      {!isAvailable && (
+                        <span className="text-xs text-gray-600 bg-white/5 px-2 py-0.5 rounded-full border border-white/8">Coming Soon</span>
                       )}
                       {isAvailable && (
                         <span className="text-xs text-gray-500">{chapter.topics} Topics</span>
@@ -182,13 +190,11 @@ export default function Home() {
                     <h3 className={`font-bold text-lg leading-snug mb-2 ${isAvailable ? "text-white" : "text-gray-500"}`}>
                       {chapter.title}
                     </h3>
-                    <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">
-                      {chapter.description}
-                    </p>
+                    <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">{chapter.description}</p>
                     {isAvailable && (
                       <div className="flex items-center gap-4 mb-5">
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                          <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-3.5 h-3.5 ${p.qIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           {chapter.questions.length} Questions
@@ -200,7 +206,7 @@ export default function Home() {
                           50s / sawal
                         </div>
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                          <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-3.5 h-3.5 ${p.tIcon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           MCQ
@@ -210,7 +216,7 @@ export default function Home() {
                     {isAvailable ? (
                       <Link
                         href={`/quiz/${chapter.id}`}
-                        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
+                        className={`flex items-center justify-center gap-2 w-full bg-gradient-to-r ${p.btn} hover:brightness-110 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg`}
                       >
                         Quiz Shuru Karein
                         <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,53 +233,53 @@ export default function Home() {
               );
             })}
 
-            {/* Chapter 14 B & C — Practice Card */}
+            {/* Chapter 14 B & C — Cyan/Teal Zen Practice Card */}
             <div
-              className="animate-fade-up group relative bg-[#0e0e1f] border border-white/10 hover:border-indigo-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
+              className="animate-fade-up group relative bg-[#07101a] border border-cyan-500/15 hover:border-cyan-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/10"
               style={{ animationDelay: `${0.12 + chapters.length * 0.08}s` }}
             >
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="p-6">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="p-6 relative">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
                       Chapter 14
                     </span>
-                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/25 to-violet-500/20 text-indigo-300 border border-indigo-400/40 tracking-wide">
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/25 to-teal-500/20 text-cyan-300 border border-cyan-400/40 tracking-wide">
                       B &amp; C
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500">8 Topics</span>
+                  <div className="flex flex-col items-end gap-0.5">
+                    <span className="text-[10px] font-bold text-cyan-400/60 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">Zen Mode</span>
+                    <span className="text-xs text-gray-500">8 Topics</span>
+                  </div>
                 </div>
-                <h3 className="font-bold text-lg leading-snug mb-2 text-white">
-                  Extensibility &amp; Teams
-                </h3>
+                <h3 className="font-bold text-lg leading-snug mb-2 text-white">Extensibility &amp; Teams</h3>
                 <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">
                   Hooks, Plugins, Ralph Loop, Agent Teams, Worktrees, Remote Control, Scheduled Tasks, Channels
                 </p>
                 <div className="flex items-center gap-4 mb-5">
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     74 Questions
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
                     <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Explanation
+                    50s Timer
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    MCQ
+                    <span className="text-orange-400 text-sm">🔥</span>
+                    Streak
                   </div>
                 </div>
                 <Link
                   href="/practice/chapter14bc"
-                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/35"
                 >
                   Practice Karein
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,53 +289,53 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Chapter 14 D — Practice Card */}
+            {/* Chapter 14 D — Violet/Fuchsia Guided Practice Card */}
             <div
-              className="animate-fade-up group relative bg-[#0e0e1f] border border-white/10 hover:border-indigo-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10"
+              className="animate-fade-up group relative bg-[#0d0712] border border-violet-500/15 hover:border-violet-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-500/10"
               style={{ animationDelay: `${0.12 + (chapters.length + 1) * 0.08}s` }}
             >
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="p-6">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-fuchsia-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-violet-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="p-6 relative">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/30">
                       Chapter 14
                     </span>
-                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/25 to-violet-500/20 text-indigo-300 border border-indigo-400/40 tracking-wide">
+                    <span className="text-sm font-black px-3 py-1 rounded-full bg-gradient-to-r from-violet-500/25 to-fuchsia-500/20 text-violet-300 border border-violet-400/40 tracking-wide">
                       D
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500">11 Topics</span>
+                  <div className="flex flex-col items-end gap-0.5">
+                    <span className="text-[10px] font-bold text-violet-400/60 bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 rounded-full">Guided Mode</span>
+                    <span className="text-xs text-gray-500">11 Topics</span>
+                  </div>
                 </div>
-                <h3 className="font-bold text-lg leading-snug mb-2 text-white">
-                  Cowork &amp; Advanced Features
-                </h3>
+                <h3 className="font-bold text-lg leading-snug mb-2 text-white">Cowork &amp; Advanced Features</h3>
                 <p className="text-gray-500 text-xs leading-5 mb-5 line-clamp-2">
                   Cowork Story, Dispatch, Computer Use, Browser Integration, Custom Visuals, Projects &amp; Scheduling
                 </p>
                 <div className="flex items-center gap-4 mb-5">
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     70 Questions
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
                     <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Explanation
+                    50s Timer
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    MCQ
+                    <span className="text-fuchsia-400 text-sm">💡</span>
+                    Hints
                   </div>
                 </div>
                 <Link
                   href="/practice/chapter14d"
-                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/35"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-white font-bold text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-violet-500/20 group-hover:shadow-violet-500/35"
                 >
                   Practice Karein
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
