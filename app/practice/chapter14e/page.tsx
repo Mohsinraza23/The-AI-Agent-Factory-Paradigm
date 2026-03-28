@@ -17,6 +17,23 @@ export default function PracticePageE() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [shakeKey, setShakeKey] = useState(0);
+  const [wrongQIds, setWrongQIds] = useState<Set<number> | null>(null);
+  const [bestEver, setBestEver] = useState<number | null>(null);
+
+  useEffect(() => {
+    const h = JSON.parse(localStorage.getItem("scoreHistory_14e") || "[]");
+    if (h.length > 0) setBestEver(Math.max(...h.map((e: { pct: number }) => e.pct)));
+  }, []);
+
+  useEffect(() => {
+    if (!done) return;
+    const h = JSON.parse(localStorage.getItem("scoreHistory_14e") || "[]");
+    const entry = { score, total: questions.length, pct: Math.round((score / questions.length) * 100), ts: Date.now() };
+    localStorage.setItem("scoreHistory_14e", JSON.stringify([entry, ...h].slice(0, 20)));
+    setBestEver(prev => Math.max(prev ?? 0, entry.pct));
+  }, [done]);
 
   // Reset timer on new question
   useEffect(() => {
@@ -27,7 +44,7 @@ export default function PracticePageE() {
   useEffect(() => {
     if (done || revealed) return;
     if (timeLeft === 0) {
-      // Auto-skip: mark as no answer (wrong)
+      setAnswers(prev => { const a = [...prev]; a[currentIndex] = -1; return a; });
       setRevealed(true);
       return;
     }
@@ -35,15 +52,31 @@ export default function PracticePageE() {
     return () => clearTimeout(t);
   }, [timeLeft, done, revealed]);
 
-  const questions = useMemo(
-    () =>
-      activeTopic === "All"
-        ? chapter14e
-        : chapter14e.filter((q) => q.topic === activeTopic),
-    [activeTopic]
-  );
+  const questions = useMemo(() => {
+    let base = activeTopic === "All" ? chapter14e : chapter14e.filter(q => q.topic === activeTopic);
+    if (wrongQIds) base = base.filter(q => wrongQIds.has(q.id));
+    return base;
+  }, [activeTopic, wrongQIds]);
 
   const question = questions[currentIndex];
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (done) return;
+      if (!revealed) {
+        if (e.key === "1") handleSelect(0);
+        else if (e.key === "2") handleSelect(1);
+        else if (e.key === "3") handleSelect(2);
+        else if (e.key === "4") handleSelect(3);
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleNext();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [revealed, done, currentIndex, selected]);
 
   function handleTopicChange(topic: TopicFilter) {
     setActiveTopic(topic);
@@ -53,13 +86,24 @@ export default function PracticePageE() {
     setScore(0);
     setDone(false);
     setTimeLeft(TIMER_SECONDS);
+    setAnswers([]);
+    setWrongQIds(null);
+  }
+
+  function handlePracticeWrong() {
+    const ids = new Set(questions.filter((q, i) => answers[i] === undefined || answers[i] === -1 || answers[i] !== q.correct).map(q => q.id));
+    setWrongQIds(ids);
+    setCurrentIndex(0); setSelected(null); setRevealed(false);
+    setScore(0); setDone(false); setTimeLeft(TIMER_SECONDS); setAnswers([]);
   }
 
   function handleSelect(i: number) {
     if (revealed) return;
     setSelected(i);
     setRevealed(true);
+    setAnswers(prev => { const a = [...prev]; a[currentIndex] = i; return a; });
     if (i === question.correct) setScore((s) => s + 1);
+    else setShakeKey(k => k + 1);
   }
 
   function handleNext() {
@@ -79,6 +123,8 @@ export default function PracticePageE() {
     setScore(0);
     setDone(false);
     setTimeLeft(TIMER_SECONDS);
+    setAnswers([]);
+    setWrongQIds(null);
   }
 
   const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
@@ -141,9 +187,39 @@ export default function PracticePageE() {
         {/* Done Screen */}
         {done ? (
           <div className="animate-pop">
+            {/* Trophy + confetti */}
+            <div className="text-center mb-6 relative">
+              {percentage >= 80 && (
+                <div className="absolute inset-0 pointer-events-none overflow-visible flex items-center justify-center">
+                  {[
+                    { x: -60, color: "#f59e0b" }, { x: 60, color: "#fb923c" },
+                    { x: -30, color: "#fbbf24" }, { x: 30, color: "#10b981" },
+                    { x: -80, color: "#f472b6" }, { x: 80, color: "#a78bfa" },
+                    { x: 0,   color: "#34d399" }, { x: -50, color: "#fde68a" },
+                  ].map((c, i) => (
+                    <div key={i} className={`absolute w-2.5 h-2.5 rounded-sm animate-confetti-${i}`}
+                      style={{ background: c.color, left: `calc(50% + ${c.x}px)`, top: "40%" }} />
+                  ))}
+                </div>
+              )}
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/30 mb-3 animate-pop">
+                <span className="text-5xl">{percentage >= 80 ? "🏆" : percentage >= 50 ? "🎯" : "💪"}</span>
+              </div>
+              <p className="text-white font-black text-2xl">
+                {percentage >= 80 ? "Shaandaar!" : percentage >= 50 ? "Acha Kiya!" : "Himmat Rakho!"}
+              </p>
+              <p className="text-gray-500 text-sm mt-1">
+                {percentage >= 80 ? "Strategy expert ban gaye!" : percentage >= 50 ? "Practice jari rakho!" : "Dobara koshish karo!"}
+              </p>
+              {bestEver !== null && (
+                <p className="text-xs text-gray-600 mt-1">Best Score: <span className="text-amber-400 font-bold">{bestEver}%</span></p>
+              )}
+            </div>
+
+            {/* Score card */}
             <div className="bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5 animate-glow">
-              <div className={`px-6 py-5 ${percentage >= 50 ? "bg-gradient-to-r from-amber-600 to-orange-500" : "bg-gradient-to-r from-red-700 to-rose-600"}`}>
-                <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-1">
+              <div className={`px-6 py-4 ${percentage >= 50 ? "bg-gradient-to-r from-amber-600 to-orange-500" : "bg-gradient-to-r from-red-700 to-rose-600"}`}>
+                <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-0.5">
                   {percentage >= 50 ? "Mubarak Ho!" : "Mehnat Karein!"}
                 </p>
                 <p className="text-white font-black text-xl">
@@ -171,19 +247,25 @@ export default function PracticePageE() {
                   />
                 </div>
                 <p className="text-right text-xs text-gray-500 mb-5">{percentage}% Sahi</p>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   <div className="bg-green-500/8 border border-green-500/20 rounded-2xl p-3 text-center">
                     <p className="text-2xl font-black text-green-400">{score}</p>
-                    <p className="text-gray-600 text-xs mt-0.5">Sahi</p>
+                    <p className="text-gray-600 text-xs mt-0.5">Sahi ✓</p>
                   </div>
                   <div className="bg-red-500/8 border border-red-500/20 rounded-2xl p-3 text-center">
-                    <p className="text-2xl font-black text-red-400">{questions.length - score}</p>
-                    <p className="text-gray-600 text-xs mt-0.5">Galat</p>
+                    <p className="text-2xl font-black text-red-400">{questions.filter((q, i) => answers[i] !== undefined && answers[i] !== -1 && answers[i] !== q.correct).length}</p>
+                    <p className="text-gray-600 text-xs mt-0.5">Galat ✗</p>
+                  </div>
+                  <div className="bg-orange-500/8 border border-orange-500/20 rounded-2xl p-3 text-center">
+                    <p className="text-2xl font-black text-orange-400">{answers.filter(a => a === -1).length}</p>
+                    <p className="text-gray-600 text-xs mt-0.5">Timeout ⏱</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            {/* Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <button
                 onClick={handleRestart}
                 className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 hover:border-amber-500/40 text-white hover:text-amber-300 font-bold py-4 rounded-2xl transition-all duration-200 hover:scale-[1.01]"
@@ -202,6 +284,63 @@ export default function PracticePageE() {
                 </svg>
                 Chapters
               </Link>
+            </div>
+
+            {answers.some((a, i) => a === undefined || a === -1 || a !== questions[i]?.correct) && (
+              <button onClick={handlePracticeWrong}
+                className="w-full mb-8 flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 hover:border-red-500/50 text-red-300 font-bold py-3 rounded-2xl transition-all duration-200 text-sm">
+                <span>🔁</span> Sirf Galat Sawaalon ki Practice ({answers.filter((a, i) => a === undefined || a === -1 || a !== questions[i]?.correct).length} sawal)
+              </button>
+            )}
+
+            {/* Jawabat ki Review */}
+            <div className="mb-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px bg-white/8" />
+                <p className="text-gray-500 text-xs font-semibold uppercase tracking-widest">Jawabat ki Review</p>
+                <div className="flex-1 h-px bg-white/8" />
+              </div>
+              <div className="space-y-3">
+                {questions.map((q, idx) => {
+                  const userAns = answers[idx];
+                  const isCorrect = userAns === q.correct;
+                  const isTimeout = userAns === -1;
+                  const isUnanswered = userAns === undefined;
+                  return (
+                    <div key={q.id} className="animate-slide-up bg-[#0d0d1f] border border-white/8 rounded-2xl overflow-hidden" style={{ animationDelay: `${idx * 0.03}s` }}>
+                      <div className="flex items-start gap-3 p-4">
+                        <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-black mt-0.5 ${isCorrect ? "bg-green-500/20 text-green-400" : isTimeout || isUnanswered ? "bg-orange-500/20 text-orange-400" : "bg-red-500/20 text-red-400"}`}>
+                          {isCorrect ? "✓" : isTimeout || isUnanswered ? "⏱" : "✗"}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-gray-300 text-xs font-medium leading-5 mb-2">{idx + 1}. {q.question}</p>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-green-400 text-xs font-semibold w-16 flex-shrink-0">Sahi Jawab:</span>
+                              <span className="text-green-300 text-xs">{OPTION_LABELS[q.correct]}. {q.options[q.correct]}</span>
+                            </div>
+                            {!isCorrect && !isTimeout && !isUnanswered && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-red-400 text-xs font-semibold w-16 flex-shrink-0">Aapka Jawab:</span>
+                                <span className="text-red-300 text-xs">{OPTION_LABELS[userAns]}. {q.options[userAns]}</span>
+                              </div>
+                            )}
+                            {(isTimeout || isUnanswered) && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-orange-400 text-xs font-semibold w-16 flex-shrink-0">Status:</span>
+                                <span className="text-orange-300 text-xs">Waqt khatam — skip ho gaya</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="mt-2 p-2.5 bg-amber-500/6 border border-amber-500/15 rounded-xl">
+                            <p className="text-amber-200/70 text-xs leading-4">{q.explanation}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         ) : (
@@ -301,10 +440,10 @@ export default function PracticePageE() {
 
                   return (
                     <button
-                      key={i}
+                      key={revealed && !isCorrect && isSelected ? shakeKey : i}
                       onClick={() => handleSelect(i)}
                       disabled={revealed}
-                      className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border text-left transition-all duration-200 ${style}`}
+                      className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border text-left transition-all duration-200 ${style} ${revealed && isSelected && !isCorrect ? "animate-shake" : ""}`}
                     >
                       <span className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black flex-shrink-0 transition-all duration-200 ${labelStyle}`}>
                         {OPTION_LABELS[i]}
@@ -359,7 +498,7 @@ export default function PracticePageE() {
 
             {!revealed && (
               <p className="text-center text-gray-700 text-xs mt-1">
-                Koi bhi option select karein — jawab ke baad explanation nazar aayegi
+                Koi bhi option chunein — ya keyboard se <kbd className="text-gray-600 bg-white/5 px-1 rounded">1</kbd> <kbd className="text-gray-600 bg-white/5 px-1 rounded">2</kbd> <kbd className="text-gray-600 bg-white/5 px-1 rounded">3</kbd> <kbd className="text-gray-600 bg-white/5 px-1 rounded">4</kbd>
               </p>
             )}
           </>

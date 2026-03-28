@@ -19,10 +19,28 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<(number | null)[]>([]);
   const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
   const [cardKey, setCardKey] = useState(0);
+  const [resumeBanner, setResumeBanner] = useState(false);
+  const [resumeData, setResumeData] = useState<{ index: number; answers: (number | null)[] } | null>(null);
 
   useEffect(() => {
     if (!chapter || chapter.questions.length === 0) router.push("/");
   }, [chapter, router]);
+
+  // Check for saved progress
+  useEffect(() => {
+    if (!chapterId) return;
+    const saved = localStorage.getItem(`quizProgress_chapter${chapterId}`);
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.index > 0) { setResumeData(data); setResumeBanner(true); }
+    }
+  }, [chapterId]);
+
+  // Save progress on each question advance
+  useEffect(() => {
+    if (currentIndex === 0 && answers.length === 0) return;
+    localStorage.setItem(`quizProgress_chapter${chapterId}`, JSON.stringify({ index: currentIndex, answers }));
+  }, [currentIndex, answers, chapterId]);
 
   const handleNext = useCallback(
     (auto = false) => {
@@ -30,6 +48,7 @@ export default function QuizPage() {
       const newAnswers = [...answers, auto ? null : selected];
       if (currentIndex + 1 >= chapter.questions.length) {
         localStorage.setItem(`quizAnswers_chapter${chapterId}`, JSON.stringify(newAnswers));
+        localStorage.removeItem(`quizProgress_chapter${chapterId}`);
         router.push(`/result/${chapterId}`);
         return;
       }
@@ -41,6 +60,22 @@ export default function QuizPage() {
     },
     [answers, chapter, chapterId, currentIndex, router, selected]
   );
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "1") setSelected(0);
+      else if (e.key === "2") setSelected(1);
+      else if (e.key === "3") setSelected(2);
+      else if (e.key === "4") setSelected(3);
+      else if ((e.key === "Enter" || e.key === " ") && selected !== null) {
+        e.preventDefault();
+        handleNext(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected, handleNext]);
 
   useEffect(() => {
     if (!chapter || chapter.questions.length === 0) return;
@@ -67,6 +102,30 @@ export default function QuizPage() {
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">
+
+        {/* Resume banner */}
+        {resumeBanner && resumeData && (
+          <div className="animate-fade-up mb-4 flex items-center justify-between gap-3 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl px-4 py-3">
+            <div>
+              <p className="text-indigo-300 text-xs font-bold">Pichla session mila!</p>
+              <p className="text-gray-500 text-xs mt-0.5">Sawal {resumeData.index + 1} se continue karein?</p>
+            </div>
+            <div className="flex gap-2 flex-shrink-0">
+              <button onClick={() => {
+                setCurrentIndex(resumeData.index); setAnswers(resumeData.answers);
+                setTimeLeft(TIMER_SECONDS); setCardKey(k => k + 1); setResumeBanner(false);
+              }} className="text-xs font-bold bg-indigo-500 hover:bg-indigo-400 text-white px-3 py-1.5 rounded-xl transition-colors">
+                Continue
+              </button>
+              <button onClick={() => {
+                localStorage.removeItem(`quizProgress_chapter${chapterId}`);
+                setResumeBanner(false);
+              }} className="text-xs font-bold bg-white/8 hover:bg-white/15 text-gray-400 px-3 py-1.5 rounded-xl transition-colors">
+                Naya
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Top bar */}
         <div className="flex items-center justify-between mb-5 animate-fade-up">

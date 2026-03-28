@@ -17,7 +17,15 @@ export default function ResultPage() {
   useEffect(() => {
     const stored = localStorage.getItem(`quizAnswers_chapter${chapterId}`);
     if (!stored) { router.push("/"); return; }
-    setAnswers(JSON.parse(stored));
+    const parsed: (number | null)[] = JSON.parse(stored);
+    setAnswers(parsed);
+    if (chapter) {
+      const s = parsed.reduce((acc, ans, i) => ans === chapter.questions[i].correct ? acc + 1 : acc, 0);
+      const pct = Math.round((s / chapter.questions.length) * 100);
+      const key = `scoreHistory_ch${chapterId}`;
+      const h = JSON.parse(localStorage.getItem(key) || "[]");
+      localStorage.setItem(key, JSON.stringify([{ score: s, total: chapter.questions.length, pct, ts: Date.now() }, ...h].slice(0, 20)));
+    }
   }, [chapterId, router]);
 
   if (!answers || !chapter) return null;
@@ -60,7 +68,20 @@ export default function ResultPage() {
         </div>
 
         {/* Score Card */}
-        <div className="animate-fade-up animate-glow bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5" style={{ animationDelay: "0.05s" }}>
+        <div className="animate-fade-up animate-glow bg-[#0d0d1f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/40 mb-5 relative" style={{ animationDelay: "0.05s" }}>
+          {percentage >= 80 && (
+            <div className="absolute top-8 right-8 pointer-events-none overflow-visible">
+              {[
+                { x: -50, color: "#818cf8" }, { x: 50, color: "#f59e0b" },
+                { x: -20, color: "#34d399" }, { x: 20, color: "#f472b6" },
+                { x: -70, color: "#a78bfa" }, { x: 70, color: "#fbbf24" },
+                { x: 0,   color: "#22d3ee" }, { x: -40, color: "#10b981" },
+              ].map((c, i) => (
+                <div key={i} className={`absolute w-2.5 h-2.5 rounded-sm animate-confetti-${i}`}
+                  style={{ background: c.color, left: `${c.x}px`, top: 0 }} />
+              ))}
+            </div>
+          )}
           <div className={`px-6 py-5 flex items-center justify-between ${passed ? "bg-gradient-to-r from-indigo-600 to-violet-500" : "bg-gradient-to-r from-red-700 to-rose-600"}`}>
             <div>
               <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-1">
