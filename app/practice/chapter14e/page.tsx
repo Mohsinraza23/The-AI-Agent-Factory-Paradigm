@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { chapter14e, TOPICS_E } from "@/data/chapter14e";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
+const TIMER_SECONDS = 50;
 
 type TopicFilter = (typeof TOPICS_E)[number] | "All";
 
@@ -15,6 +16,24 @@ export default function PracticePageE() {
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
+
+  // Reset timer on new question
+  useEffect(() => {
+    setTimeLeft(TIMER_SECONDS);
+  }, [currentIndex, activeTopic]);
+
+  // Countdown
+  useEffect(() => {
+    if (done || revealed) return;
+    if (timeLeft === 0) {
+      // Auto-skip: mark as no answer (wrong)
+      setRevealed(true);
+      return;
+    }
+    const t = setTimeout(() => setTimeLeft((n) => n - 1), 1000);
+    return () => clearTimeout(t);
+  }, [timeLeft, done, revealed]);
 
   const questions = useMemo(
     () =>
@@ -33,6 +52,7 @@ export default function PracticePageE() {
     setRevealed(false);
     setScore(0);
     setDone(false);
+    setTimeLeft(TIMER_SECONDS);
   }
 
   function handleSelect(i: number) {
@@ -58,6 +78,7 @@ export default function PracticePageE() {
     setRevealed(false);
     setScore(0);
     setDone(false);
+    setTimeLeft(TIMER_SECONDS);
   }
 
   const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
@@ -185,7 +206,7 @@ export default function PracticePageE() {
           </div>
         ) : (
           <>
-            {/* Progress + Score */}
+            {/* Progress + Score + Timer */}
             <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.08s" }}>
               <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">
                 {currentIndex + 1} / {questions.length}
@@ -200,6 +221,35 @@ export default function PracticePageE() {
                 {score} sahi
               </span>
             </div>
+
+            {/* Timer */}
+            {!revealed && (
+              <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.09s" }}>
+                <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-1000 ${
+                      timeLeft <= 10
+                        ? "bg-gradient-to-r from-red-500 to-rose-400"
+                        : timeLeft <= 20
+                        ? "bg-gradient-to-r from-yellow-500 to-amber-400"
+                        : "bg-gradient-to-r from-amber-500 to-orange-400"
+                    }`}
+                    style={{ width: `${(timeLeft / TIMER_SECONDS) * 100}%` }}
+                  />
+                </div>
+                <span
+                  className={`text-xs font-black tabular-nums w-8 text-right ${
+                    timeLeft <= 10
+                      ? "text-red-400 animate-urgent"
+                      : timeLeft <= 20
+                      ? "text-yellow-400"
+                      : "text-amber-400"
+                  }`}
+                >
+                  {timeLeft}s
+                </span>
+              </div>
+            )}
 
             {/* Topic badge */}
             <div className="mb-3 animate-fade-up" style={{ animationDelay: "0.1s" }}>
