@@ -22,7 +22,7 @@ export default function ResultPage() {
     const parsed: (number | null)[] = JSON.parse(stored);
     setAnswers(parsed);
     if (chapter) {
-      const s = parsed.reduce((acc, ans, i) => ans === chapter.questions[i].correct ? acc + 1 : acc, 0);
+      const s = parsed.reduce((acc: number, ans, i) => ans === chapter.questions[i].correct ? acc + 1 : acc, 0);
       const pct = Math.round((s / chapter.questions.length) * 100);
       const key = `scoreHistory_ch${chapterId}`;
       const h = JSON.parse(localStorage.getItem(key) || "[]");
