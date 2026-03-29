@@ -33,6 +33,7 @@ function timeAgo(ts: number) {
 
 export default function StatsPage() {
   const [data, setData] = useState<Record<string, ScoreEntry[]>>({});
+  const [dailyStreak, setDailyStreak] = useState(0);
 
   useEffect(() => {
     const result: Record<string, ScoreEntry[]> = {};
@@ -40,6 +41,10 @@ export default function StatsPage() {
       result[s.key] = JSON.parse(localStorage.getItem(s.key) || "[]");
     });
     setData(result);
+    const ds = JSON.parse(localStorage.getItem("dailyStreak") || '{"count":0,"lastDate":""}');
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    setDailyStreak(ds.lastDate === today || ds.lastDate === yesterday ? ds.count : 0);
   }, []);
 
   const totalAttempts = Object.values(data).reduce((acc, h) => acc + h.length, 0);
@@ -78,7 +83,7 @@ export default function StatsPage() {
               <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-0.5">Overall Stats</p>
               <p className="text-white font-black text-lg">Aapki Overall Performance</p>
             </div>
-            <div className="p-5 grid grid-cols-3 gap-3">
+            <div className="p-5 grid grid-cols-4 gap-3">
               <div className="bg-indigo-500/8 border border-indigo-500/20 rounded-2xl p-3 text-center">
                 <p className="text-2xl font-black text-indigo-400">{totalAttempts}</p>
                 <p className="text-gray-600 text-xs mt-0.5">Attempts</p>
@@ -90,6 +95,10 @@ export default function StatsPage() {
               <div className={`rounded-2xl p-3 text-center border ${overallPct >= 70 ? "bg-green-500/8 border-green-500/20" : overallPct >= 50 ? "bg-yellow-500/8 border-yellow-500/20" : "bg-red-500/8 border-red-500/20"}`}>
                 <p className={`text-2xl font-black ${overallPct >= 70 ? "text-green-400" : overallPct >= 50 ? "text-yellow-400" : "text-red-400"}`}>{overallPct}%</p>
                 <p className="text-gray-600 text-xs mt-0.5">Accuracy</p>
+              </div>
+              <div className="bg-orange-500/8 border border-orange-500/20 rounded-2xl p-3 text-center">
+                <p className="text-2xl font-black text-orange-400">{dailyStreak}</p>
+                <p className="text-gray-600 text-xs mt-0.5">🔥 Streak</p>
               </div>
             </div>
           </div>
@@ -103,6 +112,70 @@ export default function StatsPage() {
             </Link>
           </div>
         )}
+
+        {/* Weak Topics Report */}
+        {totalAttempts > 0 && (() => {
+          const weakSections = SECTIONS.filter(s => {
+            const h = data[s.key] || [];
+            if (h.length === 0) return false;
+            const recent = h.slice(0, 3);
+            const avg = recent.reduce((a, e) => a + e.pct, 0) / recent.length;
+            return avg < 50;
+          });
+          const needPractice = SECTIONS.filter(s => (data[s.key] || []).length === 0);
+          if (weakSections.length === 0 && needPractice.length === 0) return null;
+          return (
+            <div className="animate-fade-up mb-6 bg-[#0d0d1f] border border-red-500/20 rounded-3xl overflow-hidden" style={{ animationDelay: "0.08s" }}>
+              <div className="px-5 py-3.5 bg-red-500/8 border-b border-red-500/15 flex items-center gap-2">
+                <span className="text-base">⚠️</span>
+                <div>
+                  <p className="text-red-300 font-bold text-sm">Kamzor Topics</p>
+                  <p className="text-gray-600 text-[10px]">In topics par zyada practice karein</p>
+                </div>
+              </div>
+              <div className="p-4 space-y-2">
+                {weakSections.map(s => {
+                  const h = data[s.key] || [];
+                  const recent = h.slice(0, 3);
+                  const avg = Math.round(recent.reduce((a, e) => a + e.pct, 0) / recent.length);
+                  const c = COLOR_MAP[s.color];
+                  return (
+                    <div key={s.key} className="flex items-center gap-3 bg-red-500/5 border border-red-500/15 rounded-2xl px-3 py-2.5">
+                      <span className="text-lg flex-shrink-0">{s.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-xs font-semibold">{s.label}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="flex-1 bg-white/5 rounded-full h-1 overflow-hidden">
+                            <div className="h-1 rounded-full bg-red-500" style={{ width: `${avg}%` }} />
+                          </div>
+                          <span className="text-red-400 text-[10px] font-bold flex-shrink-0">{avg}% avg</span>
+                        </div>
+                      </div>
+                      <Link href={s.href} className={`text-[10px] font-bold ${c.text} bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl hover:bg-white/10 transition-colors flex-shrink-0`}>
+                        Practice →
+                      </Link>
+                    </div>
+                  );
+                })}
+                {needPractice.map(s => {
+                  const c = COLOR_MAP[s.color];
+                  return (
+                    <div key={s.key} className="flex items-center gap-3 bg-white/3 border border-white/8 rounded-2xl px-3 py-2.5">
+                      <span className="text-lg flex-shrink-0">{s.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-xs font-semibold">{s.label}</p>
+                        <p className="text-gray-600 text-[10px] mt-0.5">Abhi tak attempt nahi kiya</p>
+                      </div>
+                      <Link href={s.href} className={`text-[10px] font-bold ${c.text} bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl hover:bg-white/10 transition-colors flex-shrink-0`}>
+                        Shuru →
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Per-section cards */}
         <div className="space-y-3">
@@ -169,6 +242,24 @@ export default function StatsPage() {
             );
           })}
         </div>
+
+        {/* Bookmarks link */}
+        <Link href="/bookmarks" className="group flex items-center justify-between mt-6 bg-[#0d0d1f] border border-yellow-500/20 hover:border-yellow-500/45 rounded-2xl px-5 py-4 transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-yellow-500/12 border border-yellow-500/25 flex items-center justify-center flex-shrink-0">
+              <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-white font-bold text-sm">Bookmarked Sawaal</p>
+              <p className="text-gray-600 text-xs mt-0.5">Save kiye gaye sawal dekhein</p>
+            </div>
+          </div>
+          <svg className="w-4 h-4 text-yellow-400/60 group-hover:translate-x-1 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
 
         {/* Clear data */}
         {totalAttempts > 0 && (

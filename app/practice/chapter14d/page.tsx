@@ -3,8 +3,10 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { chapter14d, TOPICS_D } from "@/data/chapter14d";
+import { useSound } from "@/hooks/useSound";
 
-const TIMER_SECONDS = 50;
+const TIMER_SECONDS = 60;
+const SPEED_SECONDS = 20;
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
@@ -25,21 +27,52 @@ export default function PracticePageD() {
   const [shakeKey, setShakeKey] = useState(0);
   const [wrongQIds, setWrongQIds] = useState<Set<number> | null>(null);
   const [bestEver, setBestEver] = useState<number | null>(null);
+  const [shuffleEnabled, setShuffleEnabled] = useState(false);
+  const [shuffleSeed, setShuffleSeed] = useState(0);
+  const [speedMode, setSpeedMode] = useState(false);
+  const effectiveTimer = speedMode ? SPEED_SECONDS : TIMER_SECONDS;
+  const sound = useSound();
+  const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const b = JSON.parse(localStorage.getItem("bookmarks") || "[]");
+    setBookmarks(new Set(b));
+  }, []);
+
+  function toggleBookmark(qId: number) {
+    setBookmarks(prev => {
+      const key = `chapter14d:${qId}`;
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      localStorage.setItem("bookmarks", JSON.stringify([...next]));
+      return next;
+    });
+  }
 
   useEffect(() => {
     const h = JSON.parse(localStorage.getItem("scoreHistory_14d") || "[]");
     if (h.length > 0) setBestEver(Math.max(...h.map((e: { pct: number }) => e.pct)));
   }, []);
 
+  const [improvement, setImprovement] = useState<number | null>(null);
+  const [isFirstAttempt, setIsFirstAttempt] = useState(false);
+
   useEffect(() => {
     if (!done) return;
     const h = JSON.parse(localStorage.getItem("scoreHistory_14d") || "[]");
     const entry = { score, total: questions.length, pct: Math.round((score / questions.length) * 100), ts: Date.now() };
+    if (h.length === 0) setIsFirstAttempt(true);
+    else setImprovement(entry.pct - h[0].pct);
     localStorage.setItem("scoreHistory_14d", JSON.stringify([entry, ...h].slice(0, 20)));
     setBestEver(prev => Math.max(prev ?? 0, entry.pct));
+    sound.complete();
+    const today = new Date().toDateString();
+    const ds = JSON.parse(localStorage.getItem("dailyStreak") || '{"count":0,"lastDate":""}');
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (ds.lastDate !== today) localStorage.setItem("dailyStreak", JSON.stringify({ count: ds.lastDate === yesterday ? ds.count + 1 : 1, lastDate: today }));
   }, [done]);
 
-  useEffect(() => { setTimeLeft(TIMER_SECONDS); }, [currentIndex, activeTopic]);
+  useEffect(() => { setTimeLeft(effectiveTimer); }, [currentIndex, activeTopic, effectiveTimer]);
 
   useEffect(() => {
     if (done || revealed) return;
@@ -55,8 +88,18 @@ export default function PracticePageD() {
   const questions = useMemo(() => {
     let base = activeTopic === "All" ? chapter14d : chapter14d.filter(q => q.topic === activeTopic);
     if (wrongQIds) base = base.filter(q => wrongQIds.has(q.id));
+    if (shuffleEnabled) {
+      const arr = [...base];
+      let seed = shuffleSeed;
+      for (let i = arr.length - 1; i > 0; i--) {
+        seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+        const j = Math.abs(seed) % (i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
     return base;
-  }, [activeTopic, wrongQIds]);
+  }, [activeTopic, wrongQIds, shuffleEnabled, shuffleSeed]);
 
   const question = questions[currentIndex];
 
@@ -79,18 +122,32 @@ export default function PracticePageD() {
     return () => window.removeEventListener("keydown", onKey);
   }, [revealed, done, currentIndex, selected, hintActive]);
 
+  function toggleShuffle() {
+    setShuffleEnabled(s => !s);
+    setShuffleSeed(Math.floor(Math.random() * 999999));
+    setCurrentIndex(0); setSelected(null); setRevealed(false);
+    setScore(0); setDone(false); setHintsUsed(0); setHintActive(false); setHintPenaltyThisQ(false);
+    setTimeLeft(effectiveTimer); setAnswers([]);
+  }
+
+  function toggleSpeedMode() {
+    const next = !speedMode;
+    setSpeedMode(next);
+    setTimeLeft(next ? SPEED_SECONDS : TIMER_SECONDS);
+  }
+
   function handleTopicChange(topic: TopicFilter) {
     setActiveTopic(topic); setCurrentIndex(0); setSelected(null);
     setRevealed(false); setScore(0); setDone(false);
     setHintsUsed(0); setHintActive(false); setHintPenaltyThisQ(false);
-    setTimeLeft(TIMER_SECONDS); setAnswers([]); setWrongQIds(null);
+    setTimeLeft(effectiveTimer); setAnswers([]); setWrongQIds(null);
   }
 
   function handlePracticeWrong() {
     const ids = new Set(questions.filter((q, i) => answers[i] === undefined || answers[i] === -1 || answers[i] !== q.correct).map(q => q.id));
     setWrongQIds(ids);
     setCurrentIndex(0); setSelected(null); setRevealed(false);
-    setScore(0); setDone(false); setTimeLeft(TIMER_SECONDS); setAnswers([]);
+    setScore(0); setDone(false); setTimeLeft(effectiveTimer); setAnswers([]);
     setHintsUsed(0); setHintActive(false); setHintPenaltyThisQ(false);
   }
 
@@ -103,8 +160,8 @@ export default function PracticePageD() {
     if (revealed) return;
     setSelected(i); setRevealed(true);
     setAnswers(prev => { const a = [...prev]; a[currentIndex] = i; return a; });
-    if (i === question.correct && !hintPenaltyThisQ) setScore((s) => s + 1);
-    else if (i !== question.correct) setShakeKey(k => k + 1);
+    if (i === question.correct && !hintPenaltyThisQ) { setScore((s) => s + 1); sound.correct(); }
+    else if (i !== question.correct) { setShakeKey(k => k + 1); sound.wrong(); }
   }
 
   function handleNext() {
@@ -116,7 +173,7 @@ export default function PracticePageD() {
   function handleRestart() {
     setCurrentIndex(0); setSelected(null); setRevealed(false);
     setScore(0); setDone(false); setHintsUsed(0); setHintActive(false);
-    setHintPenaltyThisQ(false); setTimeLeft(TIMER_SECONDS); setAnswers([]); setWrongQIds(null);
+    setHintPenaltyThisQ(false); setTimeLeft(effectiveTimer); setAnswers([]); setWrongQIds(null);
   }
 
   const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
@@ -157,9 +214,27 @@ export default function PracticePageD() {
             <p className="text-violet-400/80 text-xs font-semibold uppercase tracking-widest">Guided Practice</p>
             <p className="text-gray-600 text-[10px] mt-0.5">Chapter 14 — Section D</p>
           </div>
-          <div className="flex flex-col items-end gap-0.5">
-            <span className="text-fuchsia-400 text-xs font-black">{hintsUsed}</span>
-            <span className="text-gray-600 text-[9px] uppercase tracking-wide">hints</span>
+          <div className="flex items-center gap-1.5">
+            <button onClick={toggleShuffle} title="Shuffle"
+              className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1.5 rounded-xl border transition-all duration-200 active:scale-95
+                ${shuffleEnabled ? "bg-violet-500/20 border-violet-500/50 text-violet-300" : "bg-white/4 border-white/10 text-gray-500 hover:border-violet-500/30"}`}>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4h5l2 3H4zm16 0h-5l-2 3h7zM4 20h5l8-11h3M16 20h4v-3"/></svg>
+            </button>
+            <button onClick={toggleSpeedMode} title="Speed Mode"
+              className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1.5 rounded-xl border transition-all duration-200 active:scale-95
+                ${speedMode ? "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" : "bg-white/4 border-white/10 text-gray-500 hover:border-yellow-500/30"}`}>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span>{speedMode ? "20s" : "60s"}</span>
+            </button>
+            <button onClick={sound.toggle} title="Sound"
+              className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-200 active:scale-95
+                ${sound.enabled ? "bg-violet-500/20 border-violet-500/50 text-violet-300" : "bg-white/4 border-white/10 text-gray-500 hover:border-violet-500/30"}`}>
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+            <div className="flex flex-col items-end gap-0.5 ml-1">
+              <span className="text-fuchsia-400 text-xs font-black">{hintsUsed}</span>
+              <span className="text-gray-600 text-[9px] uppercase tracking-wide">hints</span>
+            </div>
           </div>
         </div>
 
@@ -208,6 +283,12 @@ export default function PracticePageD() {
               <p className="text-gray-500 text-xs mt-1">Section D • {questions.length} Sawaal</p>
               {bestEver !== null && (
                 <p className="text-xs text-gray-600 mt-1">Best Score: <span className="text-violet-400 font-bold">{bestEver}%</span></p>
+              )}
+              {isFirstAttempt && <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold bg-violet-500/20 text-violet-200 px-2.5 py-1 rounded-full">✨ Pehli baar!</span>}
+              {!isFirstAttempt && improvement !== null && (
+                <span className={`inline-flex items-center gap-1 mt-2 text-[10px] font-bold px-2.5 py-1 rounded-full ${improvement > 0 ? "bg-green-500/20 text-green-300" : improvement < 0 ? "bg-red-500/20 text-red-300" : "bg-white/10 text-gray-400"}`}>
+                  {improvement > 0 ? `↑ +${improvement}% behtar!` : improvement < 0 ? `↓ ${improvement}%` : "= Same score"}
+                </span>
               )}
             </div>
 
@@ -346,7 +427,7 @@ export default function PracticePageD() {
                       : timeLeft <= 20 ? "bg-gradient-to-r from-yellow-500 to-amber-400"
                       : "bg-gradient-to-r from-violet-500 to-fuchsia-400"
                     }`}
-                    style={{ width: `${(timeLeft / TIMER_SECONDS) * 100}%` }}
+                    style={{ width: `${(timeLeft / effectiveTimer) * 100}%` }}
                   />
                 </div>
                 <span className={`text-xs font-black tabular-nums w-8 text-right ${
@@ -386,6 +467,13 @@ export default function PracticePageD() {
                   <p className="text-white font-semibold text-sm sm:text-base leading-6 flex-1">
                     {question.question}
                   </p>
+                  <button onClick={() => toggleBookmark(question.id)} title="Bookmark"
+                    className={`flex-shrink-0 w-7 h-7 rounded-xl flex items-center justify-center border transition-all duration-200 active:scale-90
+                      ${bookmarks.has(`chapter14d:${question.id}`) ? "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" : "bg-white/4 border-white/10 text-gray-600 hover:border-yellow-500/40 hover:text-yellow-400"}`}>
+                    <svg className="w-3 h-3" fill={bookmarks.has(`chapter14d:${question.id}`) ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -430,7 +518,7 @@ export default function PracticePageD() {
 
                   return (
                     <button
-                      key={revealed && !isCorrect && isSelected ? shakeKey : i}
+                      key={revealed && !isCorrect && isSelected ? `shake-${shakeKey}` : `opt-${i}`}
                       onClick={() => handleSelect(i)}
                       disabled={revealed}
                       className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border text-left transition-all duration-200 ${style} ${revealed && isSelected && !isCorrect ? "animate-shake" : ""}`}

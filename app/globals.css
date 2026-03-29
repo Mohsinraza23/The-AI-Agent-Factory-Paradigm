@@ -212,3 +212,35 @@ body {
   button:active { transform: scale(0.96) !important; transition: transform 0.1s !important; }
   a:active      { transform: scale(0.97) !important; transition: transform 0.1s !important; }
 }
+
+/* ── Gradient border rotate ── */
+@keyframes gradientRotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-grad-border { animation: gradientRotate 4s linear infinite; }
+
+/* ── Float particle ── */
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+  50%       { transform: translateY(-12px) scale(1.2); opacity: 0.8; }
+}
+.animate-float-1 { animation: floatParticle 3s ease-in-out infinite; }
+.animate-float-2 { animation: floatParticle 4s ease-in-out infinite 0.8s; }
+.animate-float-3 { animation: floatParticle 3.5s ease-in-out infinite 1.5s; }
+.animate-float-4 { animation: floatParticle 5s ease-in-out infinite 0.4s; }
+.animate-float-5 { animation: floatParticle 2.8s ease-in-out infinite 2s; }
+.animate-float-6 { animation: floatParticle 4.2s ease-in-out infinite 1.1s; }
+
+/* ── Score ring draw ── */
+@keyframes ringDraw {
+  from { stroke-dashoffset: 101; }
+}
+.animate-ring { animation: ringDraw 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── Card shimmer glow ── */
+@keyframes cardGlow {
+  0%, 100% { opacity: 0; }
+  50%       { opacity: 1; }
+}
+.animate-card-glow { animation: cardGlow 3s ease-in-out infinite; }

@@ -13,6 +13,8 @@ export default function ResultPage() {
   const chapterId = params.chapter as string;
   const chapter = getChapter(chapterId);
   const [answers, setAnswers] = useState<(number | null)[] | null>(null);
+  const [improvement, setImprovement] = useState<number | null>(null);
+  const [isFirstAttempt, setIsFirstAttempt] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(`quizAnswers_chapter${chapterId}`);
@@ -24,7 +26,16 @@ export default function ResultPage() {
       const pct = Math.round((s / chapter.questions.length) * 100);
       const key = `scoreHistory_ch${chapterId}`;
       const h = JSON.parse(localStorage.getItem(key) || "[]");
+      if (h.length === 0) setIsFirstAttempt(true);
+      else setImprovement(pct - h[0].pct);
       localStorage.setItem(key, JSON.stringify([{ score: s, total: chapter.questions.length, pct, ts: Date.now() }, ...h].slice(0, 20)));
+      // Update daily streak
+      const today = new Date().toDateString();
+      const ds = JSON.parse(localStorage.getItem("dailyStreak") || '{"count":0,"lastDate":""}');
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      if (ds.lastDate === today) { /* same day, no change */ }
+      else if (ds.lastDate === yesterday) localStorage.setItem("dailyStreak", JSON.stringify({ count: ds.count + 1, lastDate: today }));
+      else localStorage.setItem("dailyStreak", JSON.stringify({ count: 1, lastDate: today }));
     }
   }, [chapterId, router]);
 
@@ -90,6 +101,16 @@ export default function ResultPage() {
               <p className="text-white font-black text-xl">
                 {passed ? "Aapne Quiz Pass Kar Li 🎉" : "Dobara Koshish Karein 💪"}
               </p>
+              {isFirstAttempt && (
+                <span className="inline-flex items-center gap-1 mt-2 text-[10px] font-bold bg-white/20 text-white px-2.5 py-1 rounded-full">
+                  ✨ Pehli baar! Zabardast shuruat
+                </span>
+              )}
+              {!isFirstAttempt && improvement !== null && (
+                <span className={`inline-flex items-center gap-1 mt-2 text-[10px] font-bold px-2.5 py-1 rounded-full ${improvement > 0 ? "bg-green-500/30 text-green-200" : improvement < 0 ? "bg-red-500/30 text-red-200" : "bg-white/20 text-white"}`}>
+                  {improvement > 0 ? `↑ +${improvement}% behtar hua!` : improvement < 0 ? `↓ ${improvement}% — mehnat karein` : "= Pichli baar jaisa"}
+                </span>
+              )}
             </div>
             <span className="text-5xl animate-pop">{passed ? "🏆" : "📚"}</span>
           </div>
