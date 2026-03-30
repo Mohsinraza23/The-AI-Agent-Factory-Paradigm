@@ -244,3 +244,48 @@ body {
   50%       { opacity: 1; }
 }
 .animate-card-glow { animation: cardGlow 3s ease-in-out infinite; }
+
+/* ── Aurora blob drift ── */
+@keyframes auroraFloat {
+  0%, 100% { transform: translate(0px, 0px) scale(1);    }
+  25%       { transform: translate(30px, -25px) scale(1.08); }
+  50%       { transform: translate(-15px, 20px) scale(0.94); }
+  75%       { transform: translate(20px, 10px) scale(1.04); }
+}
+.animate-aurora-1 { animation: auroraFloat 20s ease-in-out infinite; }
+.animate-aurora-2 { animation: auroraFloat 25s ease-in-out infinite 4s reverse; }
+.animate-aurora-3 { animation: auroraFloat 30s ease-in-out infinite 8s; }
+.animate-aurora-4 { animation: auroraFloat 22s ease-in-out infinite 2s reverse; }
+.animate-aurora-5 { animation: auroraFloat 28s ease-in-out infinite 6s; }
+.animate-aurora-6 { animation: auroraFloat 18s ease-in-out infinite 10s reverse; }
+
+/* ── Slow breathe for central glow ── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(1.06); }
+}
+.animate-breathe { animation: breathe 6s ease-in-out infinite; }
+
+/* ── Particle rise ── */
+@keyframes particleRise {
+  0%   { transform: translateY(0) scale(1);    opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+}
+.animate-rise-1 { animation: particleRise 6s ease-in-out infinite; }
+.animate-rise-2 { animation: particleRise 8s ease-in-out infinite 1.5s; }
+.animate-rise-3 { animation: particleRise 7s ease-in-out infinite 3s; }
+.animate-rise-4 { animation: particleRise 9s ease-in-out infinite 0.8s; }
+.animate-rise-5 { animation: particleRise 5.5s ease-in-out infinite 2.2s; }
+.animate-rise-6 { animation: particleRise 7.5s ease-in-out infinite 4s; }
+
+/* ── Grid line shimmer ── */
+@keyframes gridShimmer {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-grid-1 { animation: gridShimmer 4s ease-in-out infinite; }
+.animate-grid-2 { animation: gridShimmer 5s ease-in-out infinite 1.5s; }
+.animate-grid-3 { animation: gridShimmer 6s ease-in-out infinite 3s; }

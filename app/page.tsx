@@ -156,27 +156,90 @@ export default function Home() {
 
       {/* ── Background ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 opacity-50" style={{
-          backgroundImage: "radial-gradient(circle, #ffffff07 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
+
+        {/* Tech grid lines */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px)
+          `,
+          backgroundSize: "64px 64px",
         }} />
-        <div className="absolute -top-64 -left-64 w-[700px] h-[700px] rounded-full blur-3xl animate-orb-1"
-          style={{ background: "radial-gradient(circle, rgba(99,102,241,0.13) 0%, transparent 70%)" }} />
-        <div className="absolute top-1/4 -right-56 w-[500px] h-[500px] rounded-full blur-3xl animate-orb-2"
-          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%)" }} />
-        <div className="absolute -bottom-64 left-1/4 w-[600px] h-[600px] rounded-full blur-3xl animate-orb-3"
-          style={{ background: "radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)" }} />
-        <div className="absolute top-[55%] right-[15%] w-80 h-80 rounded-full blur-3xl animate-orb-1"
-          style={{ background: "radial-gradient(circle, rgba(236,72,153,0.07) 0%, transparent 70%)" }} />
+        {/* Glowing dot at every intersection */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.12) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }} />
+
+        {/* Central top radial light — main focus point */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full blur-3xl animate-breathe"
+          style={{ background: "radial-gradient(ellipse at top, rgba(139,92,246,0.22) 0%, rgba(99,102,241,0.10) 40%, transparent 70%)" }} />
+
+        {/* Aurora blobs — large, vibrant, drifting */}
+        <div className="absolute -top-56 -left-56 w-[750px] h-[750px] rounded-full blur-3xl animate-aurora-1"
+          style={{ background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%)" }} />
+        <div className="absolute -top-24 -right-48 w-[550px] h-[550px] rounded-full blur-3xl animate-aurora-2"
+          style={{ background: "radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 65%)" }} />
+        <div className="absolute top-[30%] -left-36 w-[480px] h-[480px] rounded-full blur-3xl animate-aurora-3"
+          style={{ background: "radial-gradient(circle, rgba(168,85,247,0.13) 0%, transparent 65%)" }} />
+        <div className="absolute top-[45%] right-[5%] w-[420px] h-[420px] rounded-full blur-3xl animate-aurora-4"
+          style={{ background: "radial-gradient(circle, rgba(236,72,153,0.11) 0%, transparent 65%)" }} />
+        <div className="absolute bottom-[-100px] left-[20%] w-[600px] h-[600px] rounded-full blur-3xl animate-aurora-5"
+          style={{ background: "radial-gradient(circle, rgba(20,184,166,0.11) 0%, transparent 65%)" }} />
+        <div className="absolute bottom-[-80px] right-[15%] w-[450px] h-[450px] rounded-full blur-3xl animate-aurora-6"
+          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 65%)" }} />
+
+        {/* Horizontal horizon glow */}
+        <div className="absolute top-[45%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/12 to-transparent" />
+        <div className="absolute top-[45%] left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-violet-400/18 to-transparent blur-sm" />
+
+        {/* Floating neon dots */}
         {[
-          { x: "8%",  y: "15%", c: "#6366f1" }, { x: "82%", y: "9%",  c: "#06b6d4" },
-          { x: "92%", y: "50%", c: "#a855f7" }, { x: "18%", y: "78%", c: "#ec4899" },
-          { x: "58%", y: "90%", c: "#6366f1" }, { x: "4%",  y: "52%", c: "#06b6d4" },
+          { x: "7%",  y: "14%", c: "#6366f1", cls: "animate-float-1" },
+          { x: "83%", y: "8%",  c: "#06b6d4", cls: "animate-float-2" },
+          { x: "93%", y: "48%", c: "#a855f7", cls: "animate-float-3" },
+          { x: "16%", y: "76%", c: "#ec4899", cls: "animate-float-4" },
+          { x: "57%", y: "91%", c: "#6366f1", cls: "animate-float-5" },
+          { x: "3%",  y: "53%", c: "#06b6d4", cls: "animate-float-6" },
+          { x: "44%", y: "22%", c: "#f59e0b", cls: "animate-float-2" },
+          { x: "71%", y: "63%", c: "#10b981", cls: "animate-float-4" },
         ].map((d, i) => (
-          <div key={i} className={`absolute w-1 h-1 rounded-full animate-float-${i + 1}`}
-            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 8px ${d.c}` }} />
+          <div key={i} className={`absolute w-1 h-1 rounded-full ${d.cls}`}
+            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 10px ${d.c}, 0 0 20px ${d.c}55` }} />
         ))}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-400/20 to-transparent animate-scan" />
+
+        {/* Rising particles */}
+        {[
+          { x: "15%",  y: "80%", c: "#6366f1", cls: "animate-rise-1" },
+          { x: "32%",  y: "90%", c: "#8b5cf6", cls: "animate-rise-2" },
+          { x: "55%",  y: "85%", c: "#06b6d4", cls: "animate-rise-3" },
+          { x: "74%",  y: "88%", c: "#ec4899", cls: "animate-rise-4" },
+          { x: "88%",  y: "82%", c: "#a855f7", cls: "animate-rise-5" },
+          { x: "42%",  y: "92%", c: "#10b981", cls: "animate-rise-6" },
+        ].map((d, i) => (
+          <div key={`r${i}`} className={`absolute w-0.5 h-0.5 rounded-full ${d.cls}`}
+            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 6px ${d.c}` }} />
+        ))}
+
+        {/* Glowing grid accent lines */}
+        <div className="absolute top-[20%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/8 to-transparent animate-grid-1" />
+        <div className="absolute top-[60%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/8 to-transparent animate-grid-2" />
+        <div className="absolute top-[80%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/6 to-transparent animate-grid-3" />
+
+        {/* Top scan line */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/25 to-transparent animate-scan" />
+
+        {/* Noise texture for depth */}
+        <div className="absolute inset-0 opacity-[0.018]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "180px 180px",
+        }} />
+
+        {/* Vignette — edges darker for depth */}
+        <div className="absolute inset-0" style={{
+          background: "radial-gradient(ellipse at center, transparent 50%, rgba(3,3,9,0.6) 100%)"
+        }} />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-8 sm:py-12">
