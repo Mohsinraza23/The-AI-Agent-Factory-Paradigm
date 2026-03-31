@@ -254,9 +254,9 @@ export default function ChatBot() {
   return (
     <>
       {open && (
-        <div className="fixed bottom-20 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] max-w-sm animate-pop">
+        <div className="fixed bottom-[8.5rem] md:bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] max-w-sm animate-pop">
           <div className="bg-[#0a0a1e] border border-indigo-500/25 rounded-3xl overflow-hidden shadow-2xl shadow-black/60 flex flex-col"
-            style={{ height: "460px" }}>
+            style={{ height: "min(460px, calc(100vh - 10rem))" }}>
 
             {/* ── Header ── */}
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-indigo-600/80 to-violet-600/80 border-b border-white/10 flex-shrink-0">
@@ -392,7 +392,7 @@ export default function ChatBot() {
 
       {/* ── Floating button ── */}
       <button onClick={() => setOpen(o => !o)}
-        className={`fixed bottom-4 right-4 sm:right-6 z-50 w-14 h-14 rounded-2xl shadow-2xl transition-all duration-300 active:scale-95 flex items-center justify-center
+        className={`fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-2xl shadow-2xl transition-all duration-300 active:scale-95 flex items-center justify-center
           ${open
             ? "bg-gradient-to-br from-indigo-600 to-violet-600 shadow-indigo-500/40"
             : "bg-gradient-to-br from-indigo-500 to-violet-500 shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-110"}`}>
