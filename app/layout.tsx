@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import ChatBot from "@/components/ChatBot";
+import BottomNav from "@/components/BottomNav";
+import PageTransition from "@/components/PageTransition";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://the-ai-agent-factory-paradigm.vercel.app"),
@@ -37,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" data-scroll-behavior="smooth">
+    <html lang="en" className={`h-full ${inter.variable}`} data-scroll-behavior="smooth">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#6366f1" />
@@ -55,9 +64,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
-        {children}
+      <body className={`min-h-full flex flex-col ${inter.className}`}>
+        <PageTransition>
+          {children}
+        </PageTransition>
         <ChatBot />
+        <BottomNav />
       </body>
     </html>
   );

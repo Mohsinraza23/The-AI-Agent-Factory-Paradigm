@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { chapters } from "@/data/index";
 import { useEffect, useState, useRef } from "react";
 
@@ -60,9 +61,13 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
   const [streak, setStreak] = useState(0);
   const [scores, setScores] = useState<Record<string, number | null>>({});
   const [resume, setResume] = useState<Record<string, number>>({});
+  const [search, setSearch] = useState("");
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const ds = JSON.parse(localStorage.getItem("dailyStreak") || '{"count":0,"lastDate":""}');
@@ -150,6 +155,13 @@ export default function Home() {
     { key: "chapter14d", label: "14 D" },  { key: "chapter14e", label: "14 E" },
   ];
   const completedSections = allSections.filter(s => scores[s.key] !== null && scores[s.key] !== undefined).length;
+
+  const filteredChapters = chapters.filter(c =>
+    !search ||
+    c.title.toLowerCase().includes(search.toLowerCase()) ||
+    (c.description || "").toLowerCase().includes(search.toLowerCase()) ||
+    String(c.id).includes(search)
+  );
 
   return (
     <main className="min-h-screen bg-[#030309] text-white overflow-x-hidden">
@@ -242,11 +254,11 @@ export default function Home() {
         }} />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8 sm:py-12">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12">
 
         {/* ── YouTube Banner ── */}
         <a href="https://www.youtube.com/@CodewithMohsin1" target="_blank" rel="noopener noreferrer"
-          className="animate-fade-up group relative flex items-center justify-between bg-gradient-to-r from-red-950/60 via-[#150606]/70 to-red-950/40 backdrop-blur-sm border border-red-500/25 hover:border-red-400/50 rounded-2xl px-5 py-3.5 mb-8 transition-all duration-300 hover:scale-[1.012] overflow-hidden">
+          className="animate-fade-up group relative flex items-center justify-between bg-gradient-to-r from-red-950/60 via-[#150606]/70 to-red-950/40 backdrop-blur-sm border border-red-500/25 hover:border-red-400/50 rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 mb-6 sm:mb-8 transition-all duration-300 hover:scale-[1.012] overflow-hidden">
           <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-red-400/50 to-transparent" />
           <div className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-red-400/4 to-transparent animate-sweep pointer-events-none" />
           <div className="flex items-center gap-3 relative z-10">
@@ -263,7 +275,7 @@ export default function Home() {
                 <p className="text-white font-bold text-sm">Code with Mohsin</p>
                 <span className="text-[9px] font-black px-1.5 py-0.5 bg-red-500 text-white rounded-md tracking-wide animate-pulse">LIVE</span>
               </div>
-              <p className="text-red-300/45 text-xs">AI, Coding aur Tech — Urdu mein seekhein</p>
+              <p className="text-red-300/45 text-xs hidden xs:block sm:block">AI, Coding aur Tech — Urdu mein seekhein</p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 relative z-10">
@@ -275,27 +287,47 @@ export default function Home() {
         </a>
 
         {/* ── Hero ── */}
-        <div className="text-center mb-10 animate-fade-up" style={{ animationDelay: "0.05s" }}>
-          <div className="inline-flex items-center gap-2.5 bg-gradient-to-r from-indigo-500/10 via-violet-500/8 to-cyan-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold px-5 py-2 rounded-full mb-6 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
-            ✦ AI Exam Preparation Platform
-            <span className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
+        <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.05s" }}>
+          {/* mobile: stack (text then image), md+: side by side */}
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+
+            {/* Text */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2.5 bg-gradient-to-r from-indigo-500/10 via-violet-500/8 to-cyan-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold px-5 py-2 rounded-full mb-6 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+                ✦ AI Exam Preparation Platform
+                <span className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
+              </div>
+
+              <h1 className="font-black leading-none tracking-tighter mb-5">
+                <span className="block text-3xl sm:text-4xl md:text-5xl text-white/85 mb-2">Code with</span>
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-r from-cyan-300 via-violet-300 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
+                  Mohsin
+                </span>
+              </h1>
+
+              <p className="text-gray-400/80 text-sm sm:text-base max-w-lg mx-auto md:mx-0 mb-6 md:mb-8 leading-relaxed">
+                Chapter-wise MCQs for AI, Agents, LLMs &amp; Modern Software.{" "}
+                <span className="text-indigo-400/70">Har sawal par 60 second — test yourself!</span>
+              </p>
+            </div>
+
+            {/* AI Robot image — mobile: centered below text, md+: right side */}
+            <div className="flex justify-center md:justify-end flex-shrink-0 relative">
+              <div className="absolute inset-0 rounded-3xl bg-violet-500/10 blur-2xl scale-110" />
+              <Image
+                src="/ai-education.jpg"
+                alt="AI Education Robot"
+                width={240}
+                height={240}
+                className="relative rounded-3xl object-cover shadow-2xl shadow-violet-900/40 border border-white/10 w-[200px] sm:w-[220px] md:w-[200px] lg:w-[240px]"
+                priority
+              />
+            </div>
           </div>
 
-          <h1 className="font-black leading-none tracking-tighter mb-5">
-            <span className="block text-4xl sm:text-5xl text-white/85 mb-2">Code with</span>
-            <span className="block text-6xl sm:text-7xl lg:text-8xl bg-gradient-to-r from-cyan-300 via-violet-300 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
-              Mohsin
-            </span>
-          </h1>
-
-          <p className="text-gray-400/80 text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed">
-            Chapter-wise MCQs for AI, Agents, LLMs &amp; Modern Software.{" "}
-            <span className="text-indigo-400/70">Har sawal par 60 second — test yourself!</span>
-          </p>
-
           {/* Animated stat pills */}
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mt-6">
             {[
               { val: 353, suffix: "+", label: "MCQs",     icon: "❓", color: "text-blue-400",   border: "border-blue-500/20"   },
               { val: 6,   suffix: "",  label: "Chapters", icon: "📚", color: "text-violet-400", border: "border-violet-500/20" },
@@ -336,7 +368,7 @@ export default function Home() {
               <div className="h-1.5 rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-pink-400 transition-all duration-1000"
                 style={{ width: `${(completedSections / 6) * 100}%` }} />
             </div>
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {allSections.map(s => {
                 const pct = scores[s.key];
                 const done = pct !== null && pct !== undefined;
@@ -357,7 +389,7 @@ export default function Home() {
 
         {/* ── Quiz Mode ── */}
         <div className="mb-8 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/15 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
               <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -373,8 +405,53 @@ export default function Home() {
             </span>
           </div>
 
+          {/* Search bar */}
+          <div className="relative mb-4">
+            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Chapter dhundein..."
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-indigo-500/40 focus:bg-indigo-500/5 text-white text-sm placeholder-gray-600 rounded-2xl pl-10 pr-4 py-2.5 outline-none transition-all duration-200"
+            />
+            {search && (
+              <button onClick={() => setSearch("")}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {/* Skeleton cards (before mount) */}
+          {!mounted ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="rounded-3xl border border-white/6 p-4 sm:p-5 space-y-3">
+                  <div className="skeleton h-6 w-24" />
+                  <div className="skeleton h-4 w-full" />
+                  <div className="skeleton h-4 w-3/4" />
+                  <div className="skeleton h-10 w-full mt-4 rounded-2xl" />
+                </div>
+              ))}
+            </div>
+          ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {chapters.map((chapter, idx) => {
+            {filteredChapters.length === 0 && (
+              <div className="col-span-full text-center py-10 text-gray-600 text-sm">
+                <svg className="w-8 h-8 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Koi chapter nahi mila
+              </div>
+            )}
+            {filteredChapters.map((chapter, idx) => {
               const isAvailable = chapter.questions.length > 0;
               const p = quizPalettes[idx % quizPalettes.length];
               const bestScore = scores[`chapter${chapter.id}`];
@@ -395,7 +472,7 @@ export default function Home() {
                       </div>
                     )}
 
-                    <div className="p-5 relative z-10">
+                    <div className="p-4 sm:p-5 relative z-10">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex flex-col gap-1.5">
                           <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border w-fit tracking-wide ${isAvailable ? p.badge : "bg-white/5 text-gray-600 border-white/8"}`}>
@@ -472,6 +549,7 @@ export default function Home() {
               );
             })}
           </div>
+          )}
         </div>
 
         {/* ── Practice Mode ── */}
@@ -490,7 +568,7 @@ export default function Home() {
             <span className="text-[10px] font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-full">3 Sections</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {practiceSections.map((s, idx) => {
               const bestScore = scores[s.key];
               return (
@@ -535,7 +613,7 @@ export default function Home() {
         </div>
 
         {/* ── Stats + Bookmarks ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 animate-fade-up" style={{ animationDelay: "0.24s" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 sm:mb-8 animate-fade-up" style={{ animationDelay: "0.24s" }}>
 
           <TiltCard>
             <Link href="/stats" className="group relative block bg-gradient-to-br from-[#0c0c24] to-[#08081a] backdrop-blur-xl border border-indigo-500/20 hover:border-indigo-400/50 rounded-3xl overflow-hidden h-full transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
@@ -608,7 +686,7 @@ export default function Home() {
 
         {/* ── Footer ── */}
         <div className="mt-4 pt-8 border-t border-white/[0.05] animate-fade-up" style={{ animationDelay: "0.28s" }}>
-          <div className="grid grid-cols-4 gap-3 max-w-xs mx-auto mb-8">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-xs mx-auto mb-8">
             {[
               { href: "https://www.youtube.com/@CodewithMohsin1",          label: "YouTube",  hbg: "hover:bg-red-500/10",  hb: "hover:border-red-500/30",  ic: "text-red-400",  ibg: "bg-red-500/10",  type: "yt" },
               { href: "https://www.facebook.com/mohsin.raza.166438",       label: "Facebook", hbg: "hover:bg-blue-500/10", hb: "hover:border-blue-500/30", ic: "text-blue-400", ibg: "bg-blue-500/10", type: "fb" },

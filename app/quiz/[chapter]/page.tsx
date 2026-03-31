@@ -265,13 +265,32 @@ export default function QuizPage() {
           </div>
         )}
 
-        {/* Progress bar */}
-        <div className="flex items-center gap-3 mb-4 animate-fade-up" style={{ animationDelay: "0.05s" }}>
-          <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">{currentIndex + 1} / {activeQuestions.length}</span>
-          <div className="flex-1 bg-white/5 rounded-full h-1.5 overflow-hidden">
-            <div className="h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-400 transition-all duration-500" style={{ width: `${progress}%` }} />
+        {/* Progress bar + dot indicators */}
+        <div className="mb-4 animate-fade-up" style={{ animationDelay: "0.05s" }}>
+          {/* Dot indicators — max 30 shown */}
+          {activeQuestions.length <= 30 && (
+            <div className="flex items-center gap-1 mb-2 flex-wrap">
+              {activeQuestions.map((_, i) => {
+                const isDone    = i < currentIndex;
+                const isCurrent = i === currentIndex;
+                return (
+                  <span key={i} className={`rounded-full transition-all duration-300
+                    ${isCurrent ? "w-4 h-2 bg-indigo-400 shadow-sm shadow-indigo-400/60" :
+                      isDone    ? "w-2 h-2 bg-violet-500/80" :
+                                  "w-2 h-2 bg-white/10"}`}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {/* Progress bar row */}
+          <div className="flex items-center gap-3">
+            <span className="text-gray-500 text-xs tabular-nums whitespace-nowrap">{currentIndex + 1} / {activeQuestions.length}</span>
+            <div className="flex-1 bg-white/5 rounded-full h-1.5 overflow-hidden">
+              <div className="h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-400 transition-all duration-500" style={{ width: `${progress}%` }} />
+            </div>
+            <span className="text-gray-600 text-xs tabular-nums">{Math.round(progress)}%</span>
           </div>
-          <span className="text-gray-600 text-xs tabular-nums">{Math.round(progress)}%</span>
         </div>
 
         {/* Circular Timer */}
