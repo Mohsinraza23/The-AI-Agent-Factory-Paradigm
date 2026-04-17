@@ -18,9 +18,13 @@ body {
 }
 
 /* ── Custom scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #6366f155; border-radius: 999px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: rgba(1,1,10,0.5); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f180, #8b5cf680);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #6366f1bb, #8b5cf6bb); }
 
 /* ── Page entry ── */
 @keyframes fadeInUp {
@@ -319,3 +323,45 @@ body {
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .bottom-nav { padding-bottom: env(safe-area-inset-bottom); }
 }
+
+/* ── OpenClaw neon border glow ── */
+@keyframes openclawNeon {
+  0%, 100% { box-shadow: 0 0 10px #10b98125, 0 0 0px #10b98108; }
+  50%       { box-shadow: 0 0 28px #10b98150, 0 0 60px #10b98118; }
+}
+.animate-openclaw-neon { animation: openclawNeon 2.8s ease-in-out infinite; }
+
+/* ── Teal neon for ch57 ── */
+@keyframes tealNeon {
+  0%, 100% { box-shadow: 0 0 10px #14b8a625, 0 0 0px #14b8a608; }
+  50%       { box-shadow: 0 0 28px #14b8a650, 0 0 60px #14b8a618; }
+}
+.animate-teal-neon { animation: tealNeon 2.8s ease-in-out infinite; }
+
+/* ── Claw badge shimmer ── */
+@keyframes clawBadge {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.04); }
+}
+.animate-claw-badge { animation: clawBadge 2s ease-in-out infinite; }
+
+/* ── Card stagger entrance ── */
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.animate-card-enter { animation: cardEntrance 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── OpenClaw series divider glow ── */
+@keyframes dividerGlow {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+.animate-divider { animation: dividerGlow 3s ease-in-out infinite; }
+
+/* ── Number typewriter ── */
+@keyframes typeNum {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-typenum { animation: typeNum 0.4s cubic-bezier(0.22,1,0.36,1) both; }

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ChatBot from "@/components/ChatBot";
 import BottomNav from "@/components/BottomNav";
 import PageTransition from "@/components/PageTransition";
 
-const inter = Inter({
+const inter = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {

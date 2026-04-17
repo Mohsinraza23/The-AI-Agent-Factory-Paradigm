@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { chapters } from "@/data/index";
@@ -79,6 +80,7 @@ export default function Home() {
       chapter12: "scoreHistory_ch12", chapter13: "scoreHistory_ch13",
       chapter14: "scoreHistory_ch14", chapter14bc: "scoreHistory_14bc",
       chapter14d: "scoreHistory_14d", chapter14e: "scoreHistory_14e",
+      chapter56: "scoreHistory_ch56", chapter57: "scoreHistory_ch57",
     };
     const s: Record<string, number | null> = {};
     for (const [key, sk] of Object.entries(scoreKeys)) {
@@ -103,6 +105,7 @@ export default function Home() {
       num: "text-blue-500/8", tag: "text-blue-400/50",
       studyHover: "hover:border-blue-500/40 hover:text-blue-300",
       flashHover: "hover:border-blue-400/40 hover:text-blue-300",
+      openclaw: false, neonClass: "",
     },
     {
       bg: "from-[#120c28] to-[#0d091c]", border: "border-violet-500/20", hoverBorder: "hover:border-violet-400/50",
@@ -111,6 +114,7 @@ export default function Home() {
       num: "text-violet-500/8", tag: "text-violet-400/50",
       studyHover: "hover:border-violet-500/40 hover:text-violet-300",
       flashHover: "hover:border-violet-400/40 hover:text-violet-300",
+      openclaw: false, neonClass: "",
     },
     {
       bg: "from-[#240c1e] to-[#1a091a]", border: "border-fuchsia-500/20", hoverBorder: "hover:border-fuchsia-400/50",
@@ -119,6 +123,27 @@ export default function Home() {
       num: "text-fuchsia-500/8", tag: "text-fuchsia-400/50",
       studyHover: "hover:border-fuchsia-500/40 hover:text-fuchsia-300",
       flashHover: "hover:border-fuchsia-400/40 hover:text-fuchsia-300",
+      openclaw: false, neonClass: "",
+    },
+    // ── OpenClaw Ch 56 — Emerald ──────────────────────────────────────────────
+    {
+      bg: "from-[#061a10] to-[#040e09]", border: "border-emerald-500/30", hoverBorder: "hover:border-emerald-400/70",
+      glow: "via-emerald-400/60", badge: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+      btn: "from-emerald-500 to-green-400", accent: "text-emerald-400", orb: "bg-emerald-500/20",
+      num: "text-emerald-400/10", tag: "text-emerald-400/60",
+      studyHover: "hover:border-emerald-500/50 hover:text-emerald-300",
+      flashHover: "hover:border-emerald-400/50 hover:text-emerald-300",
+      openclaw: true, neonClass: "animate-openclaw-neon",
+    },
+    // ── OpenClaw Ch 57 — Teal ────────────────────────────────────────────────
+    {
+      bg: "from-[#041618] to-[#030d0f]", border: "border-teal-500/30", hoverBorder: "hover:border-teal-400/70",
+      glow: "via-teal-400/60", badge: "bg-teal-500/15 text-teal-300 border-teal-500/30",
+      btn: "from-teal-500 to-cyan-400", accent: "text-teal-400", orb: "bg-teal-500/20",
+      num: "text-teal-400/10", tag: "text-teal-400/60",
+      studyHover: "hover:border-teal-500/50 hover:text-teal-300",
+      flashHover: "hover:border-teal-400/50 hover:text-teal-300",
+      openclaw: true, neonClass: "animate-teal-neon",
     },
   ];
 
@@ -153,6 +178,7 @@ export default function Home() {
     { key: "chapter12", label: "Ch 12" }, { key: "chapter13", label: "Ch 13" },
     { key: "chapter14", label: "Ch 14" }, { key: "chapter14bc", label: "14 B&C" },
     { key: "chapter14d", label: "14 D" },  { key: "chapter14e", label: "14 E" },
+    { key: "chapter56", label: "Ch 56" }, { key: "chapter57", label: "Ch 57" },
   ];
   const completedSections = allSections.filter(s => scores[s.key] !== null && scores[s.key] !== undefined).length;
 
@@ -164,94 +190,153 @@ export default function Home() {
   );
 
   return (
-    <main className="min-h-screen bg-[#030309] text-white overflow-x-hidden">
+    <main className="min-h-screen text-white overflow-x-hidden"
+      style={{ background: "linear-gradient(135deg, #01010a 0%, #03051a 35%, #020210 65%, #010108 100%)" }}>
 
-      {/* ── Background ── */}
+      {/* ══════════════════════════════════════════════════════
+          PREMIUM BACKGROUND — LAYERED COSMIC DESIGN
+      ══════════════════════════════════════════════════════ */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
 
-        {/* Tech grid lines */}
+        {/* ── Layer 1: Deep space base gradient ── */}
+        <div className="absolute inset-0" style={{
+          background: `
+            radial-gradient(ellipse 120% 80% at 50% -10%, rgba(88,28,255,0.18) 0%, transparent 60%),
+            radial-gradient(ellipse 80% 60% at 0% 50%, rgba(6,182,212,0.10) 0%, transparent 55%),
+            radial-gradient(ellipse 70% 50% at 100% 80%, rgba(16,185,129,0.08) 0%, transparent 55%),
+            radial-gradient(ellipse 90% 70% at 80% 10%, rgba(236,72,153,0.09) 0%, transparent 50%)
+          `
+        }} />
+
+        {/* ── Layer 2: Mega nebula blobs ── */}
+        <div className="absolute -top-80 left-1/2 -translate-x-1/2 w-[1100px] h-[900px] rounded-full blur-[120px] animate-aurora-1"
+          style={{ background: "radial-gradient(ellipse, rgba(109,40,217,0.28) 0%, rgba(88,28,235,0.12) 40%, transparent 70%)" }} />
+        <div className="absolute -top-40 -right-72 w-[800px] h-[700px] rounded-full blur-[100px] animate-aurora-2"
+          style={{ background: "radial-gradient(ellipse, rgba(6,182,212,0.22) 0%, rgba(14,165,233,0.10) 45%, transparent 70%)" }} />
+        <div className="absolute top-[55%] -left-56 w-[700px] h-[600px] rounded-full blur-[90px] animate-aurora-3"
+          style={{ background: "radial-gradient(ellipse, rgba(168,85,247,0.20) 0%, rgba(139,92,246,0.08) 50%, transparent 70%)" }} />
+        <div className="absolute top-[35%] right-[0%] w-[600px] h-[550px] rounded-full blur-[90px] animate-aurora-4"
+          style={{ background: "radial-gradient(ellipse, rgba(236,72,153,0.16) 0%, rgba(219,39,119,0.07) 50%, transparent 70%)" }} />
+        <div className="absolute bottom-[-120px] left-[15%] w-[750px] h-[650px] rounded-full blur-[100px] animate-aurora-5"
+          style={{ background: "radial-gradient(ellipse, rgba(16,185,129,0.15) 0%, rgba(5,150,105,0.07) 50%, transparent 70%)" }} />
+        <div className="absolute bottom-0 right-[10%] w-[550px] h-[500px] rounded-full blur-[80px] animate-aurora-6"
+          style={{ background: "radial-gradient(ellipse, rgba(139,92,246,0.16) 0%, transparent 70%)" }} />
+
+        {/* ── Layer 3: Precision dot-grid (fine + coarse) ── */}
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px)
+            radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px),
+            radial-gradient(circle, rgba(99,102,241,0.06) 1.5px, transparent 1.5px)
           `,
-          backgroundSize: "64px 64px",
-        }} />
-        {/* Glowing dot at every intersection */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.12) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
+          backgroundSize: "28px 28px, 84px 84px",
+          backgroundPosition: "0 0, 14px 14px",
         }} />
 
-        {/* Central top radial light — main focus point */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full blur-3xl animate-breathe"
-          style={{ background: "radial-gradient(ellipse at top, rgba(139,92,246,0.22) 0%, rgba(99,102,241,0.10) 40%, transparent 70%)" }} />
+        {/* ── Layer 4: Subtle diagonal guide lines ── */}
+        <div className="absolute inset-0 opacity-[0.028]" style={{
+          backgroundImage: `
+            linear-gradient(60deg, rgba(139,92,246,1) 1px, transparent 1px),
+            linear-gradient(-60deg, rgba(6,182,212,1) 1px, transparent 1px)
+          `,
+          backgroundSize: "140px 240px",
+        }} />
 
-        {/* Aurora blobs — large, vibrant, drifting */}
-        <div className="absolute -top-56 -left-56 w-[750px] h-[750px] rounded-full blur-3xl animate-aurora-1"
-          style={{ background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%)" }} />
-        <div className="absolute -top-24 -right-48 w-[550px] h-[550px] rounded-full blur-3xl animate-aurora-2"
-          style={{ background: "radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 65%)" }} />
-        <div className="absolute top-[30%] -left-36 w-[480px] h-[480px] rounded-full blur-3xl animate-aurora-3"
-          style={{ background: "radial-gradient(circle, rgba(168,85,247,0.13) 0%, transparent 65%)" }} />
-        <div className="absolute top-[45%] right-[5%] w-[420px] h-[420px] rounded-full blur-3xl animate-aurora-4"
-          style={{ background: "radial-gradient(circle, rgba(236,72,153,0.11) 0%, transparent 65%)" }} />
-        <div className="absolute bottom-[-100px] left-[20%] w-[600px] h-[600px] rounded-full blur-3xl animate-aurora-5"
-          style={{ background: "radial-gradient(circle, rgba(20,184,166,0.11) 0%, transparent 65%)" }} />
-        <div className="absolute bottom-[-80px] right-[15%] w-[450px] h-[450px] rounded-full blur-3xl animate-aurora-6"
-          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 65%)" }} />
+        {/* ── Layer 5: Central crown spotlight ── */}
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] animate-breathe pointer-events-none"
+          style={{ background: "conic-gradient(from 180deg at 50% 0%, rgba(139,92,246,0.0) 0deg, rgba(99,102,241,0.22) 60deg, rgba(139,92,246,0.0) 120deg, rgba(6,182,212,0.16) 180deg, rgba(139,92,246,0.0) 240deg, rgba(168,85,247,0.18) 300deg, rgba(139,92,246,0.0) 360deg)", filter: "blur(60px)" }} />
 
-        {/* Horizontal horizon glow */}
-        <div className="absolute top-[45%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/12 to-transparent" />
-        <div className="absolute top-[45%] left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-violet-400/18 to-transparent blur-sm" />
+        {/* ── Layer 6: Horizontal ambient glows ── */}
+        <div className="absolute top-[18%] left-0 right-0 h-[1px] animate-grid-1"
+          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.25) 30%, rgba(6,182,212,0.30) 50%, rgba(168,85,247,0.25) 70%, transparent 100%)" }} />
+        <div className="absolute top-[52%] left-0 right-0 h-[1px] animate-grid-2"
+          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.18) 35%, rgba(16,185,129,0.22) 50%, rgba(6,182,212,0.18) 65%, transparent 100%)" }} />
+        <div className="absolute top-[82%] left-0 right-0 h-[1px] animate-grid-3"
+          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(236,72,153,0.15) 40%, rgba(139,92,246,0.20) 60%, transparent 100%)" }} />
 
-        {/* Floating neon dots */}
+        {/* ── Layer 7: Vertical light shafts ── */}
+        <div className="absolute top-0 bottom-0 left-[28%] w-[1px] animate-grid-1"
+          style={{ background: "linear-gradient(180deg, rgba(139,92,246,0.25) 0%, rgba(99,102,241,0.10) 40%, transparent 100%)" }} />
+        <div className="absolute top-0 bottom-0 right-[28%] w-[1px] animate-grid-2"
+          style={{ background: "linear-gradient(180deg, rgba(6,182,212,0.20) 0%, rgba(6,182,212,0.08) 40%, transparent 100%)" }} />
+
+        {/* ── Layer 8: Twinkling stars ── */}
         {[
-          { x: "7%",  y: "14%", c: "#6366f1", cls: "animate-float-1" },
-          { x: "83%", y: "8%",  c: "#06b6d4", cls: "animate-float-2" },
-          { x: "93%", y: "48%", c: "#a855f7", cls: "animate-float-3" },
-          { x: "16%", y: "76%", c: "#ec4899", cls: "animate-float-4" },
-          { x: "57%", y: "91%", c: "#6366f1", cls: "animate-float-5" },
-          { x: "3%",  y: "53%", c: "#06b6d4", cls: "animate-float-6" },
-          { x: "44%", y: "22%", c: "#f59e0b", cls: "animate-float-2" },
-          { x: "71%", y: "63%", c: "#10b981", cls: "animate-float-4" },
+          { x:"8%",  y:"6%",  s:1.5, c:"#a5b4fc", cls:"animate-float-1" },
+          { x:"18%", y:"22%", s:1,   c:"#93c5fd", cls:"animate-float-3" },
+          { x:"32%", y:"9%",  s:1.2, c:"#c4b5fd", cls:"animate-float-2" },
+          { x:"47%", y:"4%",  s:1,   c:"#7dd3fc", cls:"animate-float-4" },
+          { x:"61%", y:"15%", s:1.5, c:"#a5b4fc", cls:"animate-float-1" },
+          { x:"76%", y:"7%",  s:1,   c:"#f9a8d4", cls:"animate-float-5" },
+          { x:"89%", y:"19%", s:1.2, c:"#86efac", cls:"animate-float-3" },
+          { x:"94%", y:"38%", s:1,   c:"#67e8f9", cls:"animate-float-2" },
+          { x:"91%", y:"58%", s:1.5, c:"#c4b5fd", cls:"animate-float-6" },
+          { x:"85%", y:"76%", s:1,   c:"#a5b4fc", cls:"animate-float-4" },
+          { x:"72%", y:"88%", s:1.2, c:"#6ee7b7", cls:"animate-float-1" },
+          { x:"55%", y:"94%", s:1,   c:"#93c5fd", cls:"animate-float-3" },
+          { x:"38%", y:"87%", s:1.5, c:"#f9a8d4", cls:"animate-float-5" },
+          { x:"22%", y:"93%", s:1,   c:"#a5b4fc", cls:"animate-float-2" },
+          { x:"9%",  y:"79%", s:1.2, c:"#67e8f9", cls:"animate-float-6" },
+          { x:"4%",  y:"58%", s:1,   c:"#c4b5fd", cls:"animate-float-4" },
+          { x:"6%",  y:"37%", s:1.5, c:"#86efac", cls:"animate-float-1" },
+          { x:"25%", y:"48%", s:1,   c:"#f9a8d4", cls:"animate-float-3" },
+          { x:"50%", y:"55%", s:1.2, c:"#a5b4fc", cls:"animate-float-2" },
+          { x:"68%", y:"44%", s:1,   c:"#7dd3fc", cls:"animate-float-5" },
         ].map((d, i) => (
-          <div key={i} className={`absolute w-1 h-1 rounded-full ${d.cls}`}
-            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 10px ${d.c}, 0 0 20px ${d.c}55` }} />
+          <div key={`star${i}`} className={`absolute rounded-full ${d.cls}`}
+            style={{ left: d.x, top: d.y, width: `${d.s}px`, height: `${d.s}px`, background: d.c, boxShadow: `0 0 ${d.s * 4}px ${d.c}cc, 0 0 ${d.s * 8}px ${d.c}44` }} />
         ))}
 
-        {/* Rising particles */}
+        {/* ── Layer 9: Larger glowing orbs ── */}
         {[
-          { x: "15%",  y: "80%", c: "#6366f1", cls: "animate-rise-1" },
-          { x: "32%",  y: "90%", c: "#8b5cf6", cls: "animate-rise-2" },
-          { x: "55%",  y: "85%", c: "#06b6d4", cls: "animate-rise-3" },
-          { x: "74%",  y: "88%", c: "#ec4899", cls: "animate-rise-4" },
-          { x: "88%",  y: "82%", c: "#a855f7", cls: "animate-rise-5" },
-          { x: "42%",  y: "92%", c: "#10b981", cls: "animate-rise-6" },
+          { x:"12%", y:"20%", c:"#6366f1", cls:"animate-float-2", size:3 },
+          { x:"82%", y:"12%", c:"#06b6d4", cls:"animate-float-4", size:3.5 },
+          { x:"91%", y:"52%", c:"#a855f7", cls:"animate-float-1", size:2.5 },
+          { x:"5%",  y:"68%", c:"#ec4899", cls:"animate-float-3", size:3 },
+          { x:"60%", y:"88%", c:"#10b981", cls:"animate-float-5", size:3 },
+          { x:"40%", y:"30%", c:"#f59e0b", cls:"animate-float-6", size:2 },
+          { x:"75%", y:"70%", c:"#8b5cf6", cls:"animate-float-2", size:3.5 },
+          { x:"28%", y:"64%", c:"#06b6d4", cls:"animate-float-4", size:2.5 },
         ].map((d, i) => (
-          <div key={`r${i}`} className={`absolute w-0.5 h-0.5 rounded-full ${d.cls}`}
-            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 6px ${d.c}` }} />
+          <div key={`orb${i}`} className={`absolute rounded-full ${d.cls}`}
+            style={{ left: d.x, top: d.y, width: `${d.size}px`, height: `${d.size}px`, background: d.c,
+              boxShadow: `0 0 ${d.size * 5}px ${d.c}, 0 0 ${d.size * 12}px ${d.c}66, 0 0 ${d.size * 24}px ${d.c}22` }} />
         ))}
 
-        {/* Glowing grid accent lines */}
-        <div className="absolute top-[20%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/8 to-transparent animate-grid-1" />
-        <div className="absolute top-[60%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/8 to-transparent animate-grid-2" />
-        <div className="absolute top-[80%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/6 to-transparent animate-grid-3" />
+        {/* ── Layer 10: Rising particles ── */}
+        {[
+          { x:"12%", y:"85%", c:"#6366f1", cls:"animate-rise-1" },
+          { x:"29%", y:"92%", c:"#8b5cf6", cls:"animate-rise-2" },
+          { x:"48%", y:"87%", c:"#06b6d4", cls:"animate-rise-3" },
+          { x:"66%", y:"90%", c:"#ec4899", cls:"animate-rise-4" },
+          { x:"81%", y:"84%", c:"#a855f7", cls:"animate-rise-5" },
+          { x:"38%", y:"94%", c:"#10b981", cls:"animate-rise-6" },
+        ].map((d, i) => (
+          <div key={`rp${i}`} className={`absolute w-[1.5px] h-[1.5px] rounded-full ${d.cls}`}
+            style={{ left: d.x, top: d.y, background: d.c, boxShadow: `0 0 8px ${d.c}` }} />
+        ))}
 
-        {/* Top scan line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/25 to-transparent animate-scan" />
+        {/* ── Layer 11: Animated top scan beam ── */}
+        <div className="absolute top-0 left-0 right-0 h-[1.5px] animate-scan"
+          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.0) 20%, rgba(6,182,212,0.5) 50%, rgba(139,92,246,0.5) 60%, rgba(6,182,212,0.0) 80%, transparent 100%)" }} />
 
-        {/* Noise texture for depth */}
-        <div className="absolute inset-0 opacity-[0.018]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "180px 180px",
+        {/* ── Layer 12: Film grain / noise ── */}
+        <div className="absolute inset-0 opacity-[0.022]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "200px 200px",
         }} />
 
-        {/* Vignette — edges darker for depth */}
+        {/* ── Layer 13: Radial vignette — frame the content ── */}
         <div className="absolute inset-0" style={{
-          background: "radial-gradient(ellipse at center, transparent 50%, rgba(3,3,9,0.6) 100%)"
+          background: "radial-gradient(ellipse 90% 90% at 50% 40%, transparent 40%, rgba(1,1,10,0.55) 80%, rgba(1,1,10,0.85) 100%)"
         }} />
+
+        {/* ── Layer 14: Top-edge darkening ── */}
+        <div className="absolute top-0 left-0 right-0 h-32"
+          style={{ background: "linear-gradient(180deg, rgba(1,1,10,0.4) 0%, transparent 100%)" }} />
+
+        {/* ── Layer 15: Bottom-edge darkening ── */}
+        <div className="absolute bottom-0 left-0 right-0 h-48"
+          style={{ background: "linear-gradient(0deg, rgba(1,1,10,0.5) 0%, transparent 100%)" }} />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12">
@@ -329,9 +414,9 @@ export default function Home() {
           {/* Animated stat pills */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mt-6">
             {[
-              { val: 353, suffix: "+", label: "MCQs",     icon: "❓", color: "text-blue-400",   border: "border-blue-500/20"   },
-              { val: 6,   suffix: "",  label: "Chapters", icon: "📚", color: "text-violet-400", border: "border-violet-500/20" },
-              { val: 24,  suffix: "+", label: "Topics",   icon: "🎯", color: "text-cyan-400",   border: "border-cyan-500/20"   },
+              { val: 536, suffix: "+", label: "MCQs",     icon: "❓", color: "text-blue-400",   border: "border-blue-500/20"   },
+              { val: 8,   suffix: "",  label: "Sections", icon: "📚", color: "text-violet-400", border: "border-violet-500/20" },
+              { val: 42,  suffix: "+", label: "Topics",   icon: "🎯", color: "text-cyan-400",   border: "border-cyan-500/20"   },
               { val: 60,  suffix: "s", label: "Timer",    icon: "⏱", color: "text-pink-400",   border: "border-pink-500/20"   },
             ].map(s => (
               <div key={s.label} className={`flex items-center gap-2.5 bg-white/[0.03] backdrop-blur-sm border ${s.border} rounded-2xl px-4 py-2.5`}>
@@ -362,23 +447,24 @@ export default function Home() {
                 <span className="text-xs font-black text-white uppercase tracking-widest">Aapki Journey</span>
                 <span className="text-[10px] text-gray-600">{completedSections}/6 sections</span>
               </div>
-              <span className="text-xs font-black text-indigo-400">{Math.round((completedSections / 6) * 100)}% Complete</span>
+              <span className="text-xs font-black text-indigo-400">{Math.round((completedSections / 8) * 100)}% Complete</span>
             </div>
             <div className="w-full bg-white/5 rounded-full h-1.5 mb-4 overflow-hidden">
               <div className="h-1.5 rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-pink-400 transition-all duration-1000"
-                style={{ width: `${(completedSections / 6) * 100}%` }} />
+                style={{ width: `${(completedSections / 8) * 100}%` }} />
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
               {allSections.map(s => {
                 const pct = scores[s.key];
                 const done = pct !== null && pct !== undefined;
+                const isOC = s.key === "chapter56" || s.key === "chapter57";
                 const barColor = done
                   ? pct! >= 80 ? "bg-green-400" : pct! >= 60 ? "bg-yellow-400" : pct! >= 40 ? "bg-orange-400" : "bg-red-400"
-                  : "bg-white/8";
+                  : isOC ? "bg-emerald-500/20" : "bg-white/8";
                 return (
                   <div key={s.key} className="text-center">
-                    <div className={`h-1.5 rounded-full ${barColor} mb-1.5`} />
-                    <p className="text-[9px] text-gray-600">{s.label}</p>
+                    <div className={`h-1.5 rounded-full ${barColor} mb-1.5 ${isOC && !done ? "border border-emerald-500/30" : ""}`} />
+                    <p className={`text-[9px] ${isOC ? "text-emerald-500/60" : "text-gray-600"}`}>{s.label}</p>
                     {done && <p className="text-[9px] font-black text-gray-400">{pct}%</p>}
                   </div>
                 );
@@ -401,7 +487,7 @@ export default function Home() {
             </div>
             <div className="flex-1 h-px bg-gradient-to-r from-blue-500/25 to-transparent" />
             <span className="text-[10px] font-bold text-blue-300 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-full">
-              {chapters.filter(c => c.questions.length > 0).length} Active
+              {chapters.filter(c => c.questions.length > 0).length} Chapters
             </span>
           </div>
 
@@ -453,99 +539,138 @@ export default function Home() {
             )}
             {filteredChapters.map((chapter, idx) => {
               const isAvailable = chapter.questions.length > 0;
-              const p = quizPalettes[idx % quizPalettes.length];
+              const paletteIdx = ["56","57"].includes(chapter.id)
+                ? chapter.id === "56" ? 3 : 4
+                : idx % 3;
+              const p = quizPalettes[paletteIdx];
+              const isOC = p.openclaw;
               const bestScore = scores[`chapter${chapter.id}`];
               const resumeIdx = resume[chapter.id];
+              const isFirstOC = chapter.id === "56" &&
+                filteredChapters.some(c => !["56","57"].includes(c.id));
 
               return (
-                <TiltCard key={chapter.id}>
-                  <div className={`relative bg-gradient-to-br ${isAvailable ? p.bg : "from-white/[0.02] to-transparent"} backdrop-blur-xl border ${isAvailable ? `${p.border} ${p.hoverBorder}` : "border-white/5 opacity-50"} rounded-3xl overflow-hidden h-full transition-all duration-300`}
-                    style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
-                    {isAvailable && <>
-                      <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${p.glow} to-transparent opacity-60`} />
-                      <div className={`absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent ${p.glow.replace("/50", "/4")} to-transparent animate-sweep pointer-events-none`} />
-                    </>}
-                    <div className={`absolute -top-10 -right-10 w-36 h-36 ${isAvailable ? p.orb : "bg-white/3"} rounded-full blur-3xl pointer-events-none`} />
-                    {isAvailable && (
-                      <div className={`absolute -bottom-3 -right-1 text-[96px] font-black leading-none ${p.num} pointer-events-none select-none`}>
-                        {chapter.id}
-                      </div>
-                    )}
+                <React.Fragment key={chapter.id}>
 
-                    <div className="p-4 sm:p-5 relative z-10">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex flex-col gap-1.5">
-                          <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border w-fit tracking-wide ${isAvailable ? p.badge : "bg-white/5 text-gray-600 border-white/8"}`}>
-                            Chapter {chapter.id}
-                          </span>
-                          {isAvailable && <span className={`text-[9px] font-semibold uppercase tracking-widest ${p.tag}`}>Quiz Mode</span>}
+                  {/* ── OpenClaw Series divider ── */}
+                  {isFirstOC && (
+                    <div className="col-span-full mt-4 mb-1">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent animate-divider" />
+                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/5 animate-openclaw-neon">
+                          <span className="text-base animate-claw-badge">🐾</span>
+                          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-400">OpenClaw Series</span>
+                          <span className="text-[9px] text-emerald-500/50 font-semibold">NEW</span>
                         </div>
-                        {isAvailable && bestScore !== null && bestScore !== undefined
-                          ? <ScoreRing pct={bestScore} />
-                          : isAvailable
-                          ? <div className="w-11 h-11 rounded-2xl bg-white/4 border border-white/8 flex items-center justify-center">
-                              <span className={`text-2xl font-black ${p.accent} opacity-25`}>{chapter.id}</span>
-                            </div>
-                          : null}
+                        <div className="flex-1 h-px bg-gradient-to-l from-transparent via-emerald-500/40 to-transparent animate-divider" />
                       </div>
+                    </div>
+                  )}
 
-                      <h3 className={`font-bold text-sm leading-snug mb-1.5 ${isAvailable ? "text-white" : "text-gray-600"}`}>
-                        {chapter.title}
-                      </h3>
-                      <p className="text-gray-600 text-xs leading-5 mb-4 line-clamp-2">{chapter.description}</p>
+                  <TiltCard>
+                    <div className={`relative bg-gradient-to-br ${isAvailable ? p.bg : "from-white/[0.02] to-transparent"} backdrop-blur-xl border ${isAvailable ? `${p.border} ${p.hoverBorder}` : "border-white/5 opacity-50"} ${isOC && isAvailable ? p.neonClass : ""} rounded-3xl overflow-hidden h-full transition-all duration-300 animate-card-enter`}
+                      style={{ animationDelay: `${0.1 + idx * 0.07}s` }}>
 
+                      {isAvailable && <>
+                        <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${p.glow} to-transparent ${isOC ? "opacity-90" : "opacity-60"}`} />
+                        <div className={`absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent ${p.glow.replace("/60", "/5").replace("/50", "/4")} to-transparent animate-sweep pointer-events-none`} />
+                      </>}
+
+                      {/* OpenClaw corner badge */}
+                      {isOC && isAvailable && (
+                        <div className="absolute top-3 right-3 z-20">
+                          <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full border ${p.badge} animate-claw-badge`}>
+                            <span className="text-[7px] font-black tracking-[0.15em] uppercase">OpenClaw</span>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className={`absolute -top-10 -right-10 w-36 h-36 ${isAvailable ? p.orb : "bg-white/3"} rounded-full blur-3xl pointer-events-none`} />
                       {isAvailable && (
-                        <div className="flex items-center gap-2 mb-4 flex-wrap">
-                          <span className={`text-xs font-bold ${p.accent}`}>{chapter.questions.length} sawaal</span>
-                          <span className="w-1 h-1 rounded-full bg-gray-700" />
-                          <span className="text-gray-600 text-xs">{chapter.topics} topics</span>
-                          <span className="w-1 h-1 rounded-full bg-gray-700" />
-                          <span className="text-gray-600 text-xs">60s</span>
+                        <div className={`absolute -bottom-3 -right-1 text-[96px] font-black leading-none ${p.num} pointer-events-none select-none`}>
+                          {chapter.id}
                         </div>
                       )}
 
-                      {isAvailable && resumeIdx && (
-                        <div className={`flex items-center justify-between mb-3 px-3 py-2 rounded-xl bg-white/3 border ${p.border}`}>
-                          <span className="text-gray-400 text-[10px]">▶ Sawal {resumeIdx + 1} pe ruka hua</span>
-                          <Link href={`/quiz/${chapter.id}`} className={`text-[10px] font-black ${p.accent} hover:opacity-80`}>Resume →</Link>
+                      <div className="p-4 sm:p-5 relative z-10">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex flex-col gap-1.5">
+                            <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border w-fit tracking-wide ${isAvailable ? p.badge : "bg-white/5 text-gray-600 border-white/8"}`}>
+                              Chapter {chapter.id}
+                            </span>
+                            {isAvailable && (
+                              <span className={`text-[9px] font-semibold uppercase tracking-widest ${p.tag}`}>
+                                {isOC ? "🐾 OpenClaw MCQs" : "Quiz Mode"}
+                              </span>
+                            )}
+                          </div>
+                          {isAvailable && bestScore !== null && bestScore !== undefined
+                            ? <ScoreRing pct={bestScore} />
+                            : isAvailable
+                            ? <div className={`w-11 h-11 rounded-2xl ${isOC ? "bg-emerald-500/8 border border-emerald-500/20" : "bg-white/4 border border-white/8"} flex items-center justify-center`}>
+                                <span className={`text-xl ${isOC ? "opacity-60" : "text-2xl font-black opacity-25"} ${p.accent}`}>{isOC ? "🐾" : chapter.id}</span>
+                              </div>
+                            : null}
                         </div>
-                      )}
 
-                      {isAvailable ? (
-                        <div className="space-y-2">
-                          <div className="flex gap-2">
-                            <Link href={`/study/${chapter.id}`}
-                              className={`flex items-center justify-center gap-1.5 flex-1 bg-white/3 border border-white/8 ${p.studyHover} text-gray-500 font-bold text-xs py-2.5 rounded-xl transition-all duration-200`}>
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        <h3 className={`font-bold text-sm leading-snug mb-1.5 ${isAvailable ? "text-white" : "text-gray-600"}`}>
+                          {chapter.title}
+                        </h3>
+                        <p className="text-gray-500 text-xs leading-5 mb-4 line-clamp-2">{chapter.description}</p>
+
+                        {isAvailable && (
+                          <div className="flex items-center gap-2 mb-4 flex-wrap">
+                            <span className={`text-xs font-bold ${p.accent}`}>{chapter.questions.length} sawaal</span>
+                            <span className="w-1 h-1 rounded-full bg-gray-700" />
+                            <span className="text-gray-600 text-xs">{chapter.topics} topics</span>
+                            <span className="w-1 h-1 rounded-full bg-gray-700" />
+                            <span className="text-gray-600 text-xs">60s</span>
+                          </div>
+                        )}
+
+                        {isAvailable && resumeIdx && (
+                          <div className={`flex items-center justify-between mb-3 px-3 py-2 rounded-xl bg-white/3 border ${p.border}`}>
+                            <span className="text-gray-400 text-[10px]">▶ Sawal {resumeIdx + 1} pe ruka hua</span>
+                            <Link href={`/quiz/${chapter.id}`} className={`text-[10px] font-black ${p.accent} hover:opacity-80`}>Resume →</Link>
+                          </div>
+                        )}
+
+                        {isAvailable ? (
+                          <div className="space-y-2">
+                            <div className="flex gap-2">
+                              <Link href={`/study/${chapter.id}`}
+                                className={`flex items-center justify-center gap-1.5 flex-1 bg-white/3 border border-white/8 ${p.studyHover} text-gray-500 font-bold text-xs py-2.5 rounded-xl transition-all duration-200`}>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Study
+                              </Link>
+                              <Link href={`/flashcard/${chapter.id}`}
+                                className={`flex items-center justify-center gap-1.5 flex-1 bg-white/3 border border-white/8 ${p.flashHover} text-gray-500 font-bold text-xs py-2.5 rounded-xl transition-all duration-200`}>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/>
+                                </svg>
+                                Flashcard
+                              </Link>
+                            </div>
+                            <Link href={`/quiz/${chapter.id}`}
+                              className={`group/btn flex items-center justify-center gap-2 w-full bg-gradient-to-r ${p.btn} hover:brightness-110 active:scale-[0.98] text-white font-black text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg`}>
+                              {isOC ? "🐾 OpenClaw Quiz" : "Quiz Shuru Karein"}
+                              <svg className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                               </svg>
-                              Study
-                            </Link>
-                            <Link href={`/flashcard/${chapter.id}`}
-                              className={`flex items-center justify-center gap-1.5 flex-1 bg-white/3 border border-white/8 ${p.flashHover} text-gray-500 font-bold text-xs py-2.5 rounded-xl transition-all duration-200`}>
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/>
-                              </svg>
-                              Flashcard
                             </Link>
                           </div>
-                          <Link href={`/quiz/${chapter.id}`}
-                            className={`group/btn flex items-center justify-center gap-2 w-full bg-gradient-to-r ${p.btn} hover:brightness-110 active:scale-[0.98] text-white font-black text-sm py-3 rounded-2xl transition-all duration-200 shadow-lg`}>
-                            Quiz Shuru Karein
-                            <svg className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                            </svg>
-                          </Link>
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center gap-2 w-full bg-white/3 text-gray-600 font-bold text-sm py-3 rounded-2xl border border-white/6 cursor-not-allowed select-none">
-                          <span className="w-1.5 h-1.5 bg-gray-700 rounded-full animate-pulse" />
-                          Jald Aane Wala Hai
-                        </div>
-                      )}
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 w-full bg-white/3 text-gray-600 font-bold text-sm py-3 rounded-2xl border border-white/6 cursor-not-allowed select-none">
+                            <span className="w-1.5 h-1.5 bg-gray-700 rounded-full animate-pulse" />
+                            Jald Aane Wala Hai
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </TiltCard>
+                  </TiltCard>
+                </React.Fragment>
               );
             })}
           </div>
@@ -635,8 +760,8 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                   {[
-                    { val: "6",   label: "Sections",  color: "text-indigo-400" },
-                    { val: "353+",label: "Sawaalat",  color: "text-violet-400" },
+                    { val: "8",   label: "Sections",  color: "text-indigo-400" },
+                    { val: "536+",label: "Sawaalat",  color: "text-violet-400" },
                     { val: streak > 0 ? `${streak}🔥` : "—", label: "Streak", color: streak > 0 ? "text-orange-400" : "text-gray-600" },
                   ].map(t => (
                     <div key={t.label} className="bg-white/[0.03] border border-white/6 rounded-xl p-2.5 text-center">
