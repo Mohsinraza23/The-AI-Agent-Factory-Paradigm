@@ -445,7 +445,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-black text-white uppercase tracking-widest">Aapki Journey</span>
-                <span className="text-[10px] text-gray-600">{completedSections}/6 sections</span>
+                <span className="text-[10px] text-gray-600">{completedSections}/8 sections</span>
               </div>
               <span className="text-xs font-black text-indigo-400">{Math.round((completedSections / 8) * 100)}% Complete</span>
             </div>
@@ -453,7 +453,7 @@ export default function Home() {
               <div className="h-1.5 rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-pink-400 transition-all duration-1000"
                 style={{ width: `${(completedSections / 8) * 100}%` }} />
             </div>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-8 sm:gap-2">
               {allSections.map(s => {
                 const pct = scores[s.key];
                 const done = pct !== null && pct !== undefined;
